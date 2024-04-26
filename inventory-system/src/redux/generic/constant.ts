@@ -1,0 +1,4 @@
+export const actionTypes = {
+  REQUEST_HELLO_WORLD : 'HELLO_WORLD',
+  RECEIVE_HELLO_WORLD : 'HELLO_WORLD',
+};

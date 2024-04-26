@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*footer*/
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+/*footer end */
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .footer {
+    text-align: center;
+  }
+}
