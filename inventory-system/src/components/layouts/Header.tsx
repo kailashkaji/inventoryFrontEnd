@@ -125,7 +125,6 @@ const data = [
   {
     title: "New message from Sophie",
     description: <>{clockicon} 2 days ago</>,
-
     avatar: avtar,
   },
   {
@@ -144,7 +143,7 @@ const data = [
 const menu = (
   <List
     min-width="100%"
-    className="header-notifications-dropdown "
+    className="header-notifications-dropdown"
     itemLayout="horizontal"
     dataSource={data}
     renderItem={(item) => (
