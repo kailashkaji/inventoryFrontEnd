@@ -6,6 +6,7 @@ import Register from "./pages/register.tsx";
 import PrivateRoutes from "./utills/PrivateRoute.tsx";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import Supplier from "./pages/supplier.tsx";
+import Brand from "./pages/brand.tsx";
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ function App() {
             <Route element={<Main />}>
               <Route path="/dashboard" element={<Home />} />
               <Route path="/supplier" element={<Supplier />} />
+              <Route path="/brand" element={<Brand />} />
             </Route>
           </Route>
         </Route>
