@@ -15,7 +15,7 @@ function* userLogin(
       headerParms
     );
     const result = response.data;
-    console.warn("action.data===>", action.data);
+    console.warn("action.data===>", response);
     // dispatch a success action to the store with the new dog
     yield put({ type: actionTypesLogin.USER_LOGIN_SUCCESS, result });
   } catch (error) {

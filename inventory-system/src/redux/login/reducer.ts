@@ -39,7 +39,7 @@ const loginReducer = (state = initialState, action: ActionLogin) => {
         obj[action.data.field] = action.data.value;
       }
       const login = Object.assign({}, state.login, obj);
-      console.warn("loginReducer", login);
+      //console.warn("loginReducer", login);
       return {
         ...state,
         fetching: false,

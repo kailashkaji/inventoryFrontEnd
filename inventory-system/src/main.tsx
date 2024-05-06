@@ -4,9 +4,9 @@ import App from "./App.tsx";
 import "./index.css";
 import { Provider } from "react-redux";
 import store from "./redux/store.ts";
+import "antd/dist/reset.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
-import "antd/dist/reset.css";
 import AuthProvider from "react-auth-kit";
 import { authStore } from "./utills/refresh.ts";
 ReactDOM.createRoot(document.getElementById("root")!).render(

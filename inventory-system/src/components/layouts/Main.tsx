@@ -1,5 +1,5 @@
-import { useState, useEffect, SetStateAction, ReactNode } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useEffect, SetStateAction } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { Layout, Drawer, Affix } from "antd";
 import Sidenav from "./Sidenav";
 import Header from "./Header";
@@ -7,7 +7,7 @@ import Footer from "./Footer";
 
 const { Header: AntHeader, Content, Sider } = Layout;
 
-function Main({ children }: { children: ReactNode }) {
+function Main() {
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [sidenavColor, setSidenavColor] = useState("#1890ff");
@@ -112,7 +112,9 @@ function Main({ children }: { children: ReactNode }) {
             />
           </AntHeader>
         )}
-        <Content className="content-ant">{children}</Content>
+        <Content className="content-ant">
+          <Outlet />
+        </Content>
         <Footer />
       </Layout>
     </Layout>

@@ -5,6 +5,7 @@ import SignIn from "./pages/login.tsx";
 import Register from "./pages/register.tsx";
 import PrivateRoutes from "./utills/PrivateRoute.tsx";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
+import Supplier from "./pages/supplier.tsx";
 function App() {
   return (
     <BrowserRouter>
@@ -18,18 +19,13 @@ function App() {
               index
               element={<Navigate to="/dashboard" replace={true} />}
             />
-            <Route element={<Main children />}>
+            <Route element={<Main />}>
               <Route path="/dashboard" element={<Home />} />
+              <Route path="/supplier" element={<Supplier />} />
             </Route>
           </Route>
         </Route>
       </Routes>
-      {/* use this code after authentication and add some files too */}
-      {/* <Switch>
-        <PrivateRoute exact path="/" component={Home} />
-        <Route path="/login" component={LoginPage}/>
-        <PrivateRoute path="/home" component={Dashboard} />
-        </Switch> */}
     </BrowserRouter>
   );
 }

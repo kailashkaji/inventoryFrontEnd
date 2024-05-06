@@ -41,5 +41,5 @@ export const authStore = createStore({
   cookieDomain: window.location.hostname,
   cookieSecure: false, //window.location.protocol === "https:",
   //refresh: refresh,
-  debug: true,
+  //debug: true,
 });
