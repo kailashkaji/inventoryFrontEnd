@@ -110,7 +110,10 @@ const Brands: React.FC = () => {
             >
               <div className="table-responsive">
                 <Table
-                  dataSource={brandList}
+                  dataSource={brandList.map((brand, index) => ({
+                    ...brand,
+                    key: index,
+                  }))}
                   columns={columns}
                   className="ant-border-space"
                 />

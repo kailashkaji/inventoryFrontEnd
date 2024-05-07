@@ -21,7 +21,7 @@ import avtar from "../../assets/images/team-2.jpg";
 import { useEffect, useState } from "react";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 import { useDispatch } from "react-redux";
-import { UserLogout } from "../../redux/login/action";
+import { UserClear } from "../../redux/login/action";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -250,7 +250,7 @@ function Header({
 
   useEffect(() => window.scrollTo(0, 0));
   const logoutHandler = () => {
-    dispatch(UserLogout());
+    dispatch(UserClear());
     signOut();
   };
   const showDrawer = () => setVisible(true);

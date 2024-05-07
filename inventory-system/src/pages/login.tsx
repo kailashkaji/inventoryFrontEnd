@@ -12,7 +12,11 @@ import {
 } from "@ant-design/icons";
 import { ValidateErrorEntity } from "rc-field-form/es/interface";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { AssignLoginCredential, UserLogin } from "../redux/login/action";
+import {
+  AssignLoginCredential,
+  UserClear,
+  UserLogin,
+} from "../redux/login/action";
 import { RootState } from "../redux/store";
 
 const { Title } = Typography;
@@ -127,12 +131,10 @@ const SignIn = () => {
   //   shallowEqual
   // );
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.warn("onchange", e.target.name);
     const keyValue: Record<string, string> = {};
     keyValue.field = e.target.name;
     keyValue.value = e.target.value;
     dispatch(AssignLoginCredential(keyValue));
-    console.warn("store state :", login);
   };
 
   const assignCredentials = useCallback(() => {
@@ -150,8 +152,6 @@ const SignIn = () => {
   }, [accessToken, login.username, signIn]);
 
   useEffect(() => {
-    console.warn("stop:", stop);
-
     if (isAuthenticated) {
       navigate(from.pathname);
       //      dispatch(ValidateAuth());
@@ -159,9 +159,17 @@ const SignIn = () => {
     if (!!isSuccess && !stop) {
       setStop(true);
       assignCredentials();
-      console.warn("stopa:", stop);
+      dispatch(UserClear());
     }
-  }, [assignCredentials, from, isAuthenticated, isSuccess, navigate, stop]);
+  }, [
+    assignCredentials,
+    dispatch,
+    from.pathname,
+    isAuthenticated,
+    isSuccess,
+    navigate,
+    stop,
+  ]);
 
   const onFinish = (values: string) => {
     console.log("Success:", values);
@@ -303,24 +311,24 @@ const SignIn = () => {
         </Content>
         <Footer>
           <Menu mode="horizontal">
-            <Menu.Item>Company</Menu.Item>
-            <Menu.Item>About Us</Menu.Item>
-            <Menu.Item>Teams</Menu.Item>
-            <Menu.Item>Products</Menu.Item>
-            <Menu.Item>Blogs</Menu.Item>
-            <Menu.Item>Pricing</Menu.Item>
+            <Menu.Item key="1">Company</Menu.Item>
+            <Menu.Item key="2">About Us</Menu.Item>
+            <Menu.Item key="3">Teams</Menu.Item>
+            <Menu.Item key="4">Products</Menu.Item>
+            <Menu.Item key="5">Blogs</Menu.Item>
+            <Menu.Item key="6">Pricing</Menu.Item>
           </Menu>
           <Menu mode="horizontal" className="menu-nav-social">
-            <Menu.Item>
+            <Menu.Item key="1">
               <Link to="#">{<DribbbleOutlined />}</Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="2">
               <Link to="#">{<TwitterOutlined />}</Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="3">
               <Link to="#">{<InstagramOutlined />}</Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="4">
               <Link to="#">
                 <svg
                   width="18"
@@ -332,7 +340,7 @@ const SignIn = () => {
                 </svg>
               </Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="5">
               <Link to="#">{<GithubOutlined />}</Link>
             </Menu.Item>
           </Menu>

@@ -76,14 +76,14 @@ const loginReducer = (state = initialState, action: ActionLogin) => {
         isSuccess: true,
       };
 
-    case actionTypesLogin.USER_LOGOUT:
+    case actionTypesLogin.USER_CLEAR:
       return {
         ...state,
         fetching: false,
         authentication: false,
         accessToken: "",
         refreshToken: "",
-        messages: "logout Success!!",
+        messages: "clear Success!!",
         isSuccess: false,
       };
 

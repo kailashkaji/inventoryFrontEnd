@@ -8,10 +8,9 @@ export const UserLogin = (data: Record<string, string | null>) => {
   };
 };
 
-export const UserLogout = () => {
-  console.warn("User logout Action");
+export const UserClear = () => {
   return {
-    type: actionTypesLogin.USER_LOGOUT,
+    type: actionTypesLogin.USER_CLEAR,
   };
 };
 
