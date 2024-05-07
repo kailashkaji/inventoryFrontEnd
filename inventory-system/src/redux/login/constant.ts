@@ -6,6 +6,9 @@ export const actionTypesLogin = {
   VALIDATE_AUTH: "VALIDATE_AUTH" as const,
   VALIDATE_AUTH_SUCCESS: "VALIDATE_AUTH_SUCCESS" as const,
   VALIDATE_AUTH_ERROR: "VALIDATE_AUTH_ERROR" as const,
+  USER_LOGOUT: "USER_LOGOUT" as const,
+  USER_LOGOUT_SUCCESS: "USER_LOGIN_SUCCESS" as const,
+  USER_LOGOUT_ERROR: "USER_LOGIN_ERROR" as const,
 };
 
 type ActionTypesLogin =

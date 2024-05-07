@@ -8,6 +8,13 @@ export const UserLogin = (data: Record<string, string | null>) => {
   };
 };
 
+export const UserLogout = () => {
+  console.warn("User logout Action");
+  return {
+    type: actionTypesLogin.USER_LOGOUT,
+  };
+};
+
 export const AssignLoginCredential = (
   data: Record<string, string | number | boolean>
 ) => {

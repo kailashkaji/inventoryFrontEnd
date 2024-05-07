@@ -76,6 +76,17 @@ const loginReducer = (state = initialState, action: ActionLogin) => {
         isSuccess: true,
       };
 
+    case actionTypesLogin.USER_LOGOUT:
+      return {
+        ...state,
+        fetching: false,
+        authentication: false,
+        accessToken: "",
+        refreshToken: "",
+        messages: "logout Success!!",
+        isSuccess: false,
+      };
+
     case actionTypesLogin.USER_LOGIN_ERROR:
       console.warn("User Login Failed : ", action.error);
       return {

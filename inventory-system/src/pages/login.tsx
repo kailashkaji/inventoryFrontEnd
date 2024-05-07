@@ -150,6 +150,8 @@ const SignIn = () => {
   }, [accessToken, login.username, signIn]);
 
   useEffect(() => {
+    console.warn("stop:", stop);
+
     if (isAuthenticated) {
       navigate(from.pathname);
       //      dispatch(ValidateAuth());
@@ -157,7 +159,7 @@ const SignIn = () => {
     if (!!isSuccess && !stop) {
       setStop(true);
       assignCredentials();
-      console.warn(from, "only need to redirect:", from.pathname);
+      console.warn("stopa:", stop);
     }
   }, [assignCredentials, from, isAuthenticated, isSuccess, navigate, stop]);
 

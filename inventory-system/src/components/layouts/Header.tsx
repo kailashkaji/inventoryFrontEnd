@@ -19,6 +19,9 @@ import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../assets/images/team-2.jpg";
 import { useEffect, useState } from "react";
+import useSignOut from "react-auth-kit/hooks/useSignOut";
+import { useDispatch } from "react-redux";
+import { UserLogout } from "../../redux/login/action";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -239,13 +242,17 @@ function Header({
   handleSidenavType: (arg: string) => void;
   handleFixedNavbar: (arg: boolean) => void;
 }) {
+  const dispatch = useDispatch();
   const { Title, Text } = Typography;
-
+  const signOut = useSignOut();
   const [visible, setVisible] = useState(false);
   const [sidenavType, setSidenavType] = useState("transparent");
 
   useEffect(() => window.scrollTo(0, 0));
-
+  const logoutHandler = () => {
+    dispatch(UserLogout());
+    signOut();
+  };
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
 
@@ -387,9 +394,13 @@ function Header({
               </div>
             </div>
           </Drawer>
-          <Link to="/sign-in" className="btn-sign-in">
+          <Link
+            onClick={() => logoutHandler()}
+            to="/sign-in"
+            className="btn-sign-in"
+          >
             {profile}
-            <span>Sign in</span>
+            <span>Sign Out</span>
           </Link>
           <Input
             className="header-search"
