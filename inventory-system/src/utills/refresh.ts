@@ -14,7 +14,7 @@ export const refresh = createRefresh({
       };
       const body = { token: param.refreshToken };
       const response = await axios.post(
-        "http://localhost:9090/api/auth/login",
+        "http://localhost:9090/api/auth/refreshToken",
         body,
         headerParms
       );

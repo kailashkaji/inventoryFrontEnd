@@ -29,12 +29,11 @@ const supplierReducer = (
         error: null,
       };
     case actionSupplier.ADD_SUPPLIER_SUCCESS: {
-      console.warn("add supplier success");
       const supplier: SupplierData[] = Object.assign(
         state.suppliers,
         action.result
       );
-      console.warn("add supplier ==>", supplier);
+      console.warn("add supplier reducer ==>", supplier);
 
       return {
         ...state,
