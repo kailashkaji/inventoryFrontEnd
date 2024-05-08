@@ -277,24 +277,24 @@ const SignUp: React.FC = () => {
         </Content>
         <Footer>
           <Menu mode="horizontal">
-            <Menu.Item>Company</Menu.Item>
-            <Menu.Item>About Us</Menu.Item>
-            <Menu.Item>Teams</Menu.Item>
-            <Menu.Item>Products</Menu.Item>
-            <Menu.Item>Blogs</Menu.Item>
-            <Menu.Item>Pricing</Menu.Item>
+            <Menu.Item key="1">Company</Menu.Item>
+            <Menu.Item key="2">About Us</Menu.Item>
+            <Menu.Item key="3">Teams</Menu.Item>
+            <Menu.Item key="4">Products</Menu.Item>
+            <Menu.Item key="5">Blogs</Menu.Item>
+            <Menu.Item key="6">Pricing</Menu.Item>
           </Menu>
           <Menu mode="horizontal" className="menu-nav-social">
-            <Menu.Item>
+            <Menu.Item key="1">
               <Link to="#">{<DribbbleOutlined />}</Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="2">
               <Link to="#">{<TwitterOutlined />}</Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="3">
               <Link to="#">{<InstagramOutlined />}</Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="4">
               <Link to="#">
                 <svg
                   width="18"
@@ -306,7 +306,7 @@ const SignUp: React.FC = () => {
                 </svg>
               </Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="5">
               <Link to="#">{<GithubOutlined />}</Link>
             </Menu.Item>
           </Menu>

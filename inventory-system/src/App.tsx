@@ -8,6 +8,7 @@ import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import Supplier from "./pages/supplier.tsx";
 import Brand from "./pages/brand.tsx";
 import Category from "./pages/category.tsx";
+import Product from "./pages/product.tsx";
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
               <Route path="/supplier" element={<Supplier />} />
               <Route path="/brand" element={<Brand />} />
               <Route path="/category" element={<Category />} />
+              <Route path="/product" element={<Product />} />
             </Route>
           </Route>
         </Route>
