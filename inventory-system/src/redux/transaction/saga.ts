@@ -5,7 +5,7 @@ import {
   getAllTransactions,
   getTransactionById,
   updateTransaction,
-} from "../../http/transaction"; // Import your transaction API functions
+} from "../../http/transaction.ts";
 import { AxiosResponse } from "axios";
 
 function* addTransaction(action: {
@@ -41,16 +41,21 @@ function* updateTransactionSaga(action: {
     const headerParms = {
       "Content-Type": "application/json",
     };
-    console.warn("transaction updated ===>", action.payload);
-    const response = yield call(
-      updateTransaction,
-      action.payload.id,
-      JSON.stringify(action.payload),
-      headerParms
-    );
-    console.warn("transaction updated ===>", response);
-    const result = response.data;
-    yield put({ type: actionTransaction.UPDATE_TRANSACTION_SUCCESS, result });
+    const { payload } = action;
+    if (payload.id !== undefined) { 
+      const response = yield call(
+        updateTransaction,
+        payload.id,
+        JSON.stringify(payload),
+        headerParms
+      );
+      console.warn("transaction updated ===>", response);
+      const result = response.data;
+      yield put({ type: actionTransaction.UPDATE_TRANSACTION_SUCCESS, result });
+    } else {
+      // Handle the case where id is undefined
+      throw new Error("Transaction ID is undefined");
+    }
   } catch (error) {
     yield put({
       type: actionTransaction.UPDATE_TRANSACTION_ERROR,

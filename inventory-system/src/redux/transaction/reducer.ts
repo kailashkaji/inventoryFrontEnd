@@ -32,23 +32,23 @@ const transactionReducer = (
         error: null,
       };
     case actionTransaction.ADD_TRANSACTION_SUCCESS:
-    // case actionTransaction.UPDATE_TRANSACTION_SUCCESS:
-    //     const updatedIndex = state.transactions.findIndex(transaction => transaction.id === action.payload?.id);
-    //     let updatedTransactions: Transaction[];
-    //     if (updatedIndex !== -1) {
-    //         updatedTransactions = [...state.transactions];
-    //         updatedTransactions[updatedIndex] = action.payload;
-    //     } else {
-    //         updatedTransactions = [...state.transactions, action.payload];
-    //     }
-    //     return {
-    //         ...state,
-    //         transactions: updatedTransactions,
-    //         loading: false,
-    //         error: null,
-    //         isSuccess: true,
-    //         isError: false,
-    //     };
+    case actionTransaction.UPDATE_TRANSACTION_SUCCESS:
+        // const updatedIndex = state.transactions.findIndex(transaction => transaction.id === action.payload?.id);
+        // let updatedTransactions: Transaction[];
+        // if (updatedIndex !== -1) {
+        //     updatedTransactions = [...state.transactions];
+        //     updatedTransactions[updatedIndex] = action.payload;
+        // } else {
+        //     updatedTransactions = [...state.transactions, action.payload];
+        // }
+        // return {
+        //     ...state,
+        //     transactions: updatedTransactions,
+        //     loading: false,
+        //     error: null,
+        //     isSuccess: true,
+        //     isError: false,
+        // };
     case actionTransaction.LOAD_TRANSACTION_SUCCESS:
     case actionTransaction.LOAD_ALL_TRANSACTION_SUCCESS:
       return {
