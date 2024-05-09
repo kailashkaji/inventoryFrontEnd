@@ -37,7 +37,7 @@ const Brands: React.FC = () => {
       console.log("call create dispatch =>>", sup);
     }
     setVisible(false);
-    setLoading(true);
+    setTimeout(() => setLoading(true), 1000);
   };
   const onUpdate = (sup: BrandData) => {
     setBrand(sup);
@@ -110,9 +110,9 @@ const Brands: React.FC = () => {
             >
               <div className="table-responsive">
                 <Table
-                  dataSource={brandList.map((brand, index) => ({
+                  dataSource={brandList.map((brand) => ({
                     ...brand,
-                    key: index,
+                    key: brand.id,
                   }))}
                   columns={columns}
                   className="ant-border-space"

@@ -5,17 +5,17 @@ import {
   Badge,
   Dropdown,
   Button,
-  List,
   Avatar,
   Input,
   Drawer,
   Typography,
   Switch,
+  Menu,
 } from "antd";
 
 import { SearchOutlined } from "@ant-design/icons";
 
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../assets/images/team-2.jpg";
 import { useEffect, useState } from "react";
@@ -143,22 +143,34 @@ const data = [
   },
 ];
 
-const menu = (
-  <List
-    min-width="100%"
-    className="header-notifications-dropdown"
-    itemLayout="horizontal"
-    dataSource={data}
-    renderItem={(item) => (
-      <List.Item>
-        <List.Item.Meta
-          avatar={<Avatar shape="square" src={item.avatar} />}
-          title={item.title}
-          description={item.description}
-        />
-      </List.Item>
-    )}
-  />
+// const menu = (
+//   <List
+//     min-width="100%"
+//     className="header-notifications-dropdown"
+//     itemLayout="horizontal"
+//     dataSource={data}
+//     renderItem={(item) => (
+//       <List.Item>
+//         <List.Item.Meta
+//           avatar={<Avatar shape="square" src={item.avatar} />}
+//           title={item.title}
+//           description={item.description}
+//         />
+//       </List.Item>
+//     )}
+//   />
+// );
+
+const items = (
+  <Menu min-width="100%" className="header-notifications-dropdown">
+    {data.map((item) => (
+      <Menu.Item key={item.title}>
+        <Avatar shape="square" src={item.avatar} />
+        <span>{item.title}</span>
+        <span>{item.description}</span>
+      </Menu.Item>
+    ))}
+  </Menu>
 );
 
 const logsetting = [
@@ -263,7 +275,7 @@ function Header({
       </div>
       <Row gutter={[24, 0]}>
         <Col span={24} md={6}>
-          <Breadcrumb>
+          {/* <Breadcrumb>
             <Breadcrumb.Item>
               <NavLink to="/">Pages</NavLink>
             </Breadcrumb.Item>
@@ -272,7 +284,20 @@ function Header({
                 {name.replace("/", "")}
               </div>
             </Breadcrumb.Item>
-          </Breadcrumb>
+          </Breadcrumb> */}
+          <Breadcrumb
+            separator=">"
+            items={[
+              { title: "Pages" },
+              {
+                title: (
+                  <div style={{ textTransform: "capitalize" }}>
+                    {name.replace("/", "")}
+                  </div>
+                ),
+              },
+            ]}
+          />
           <div className="ant-page-header-heading">
             <span
               className="ant-page-header-heading-title"
@@ -284,7 +309,7 @@ function Header({
         </Col>
         <Col span={24} md={18} className="header-control">
           <Badge size="small" count={4}>
-            <Dropdown overlay={menu} trigger={["click"]}>
+            <Dropdown overlay={items} trigger={["click"]}>
               <a
                 href="#pablo"
                 className="ant-dropdown-link"

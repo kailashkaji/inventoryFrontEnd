@@ -1,78 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Space, TableProps, Card, Row, Col } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import SupplierForm from "./modal/addUpdateViewSupplier";
+import ProductForm from "./modal/addUpdateViewProduct";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import {
-  createSupplier,
-  getSuppliers,
-  updateSupplier,
-} from "../redux/supplier/action";
-import { SupplierData } from "../redux/supplier/constant";
+  createProduct,
+  getProducts,
+  updateProduct,
+} from "../redux/product/action";
+import { ProductData } from "../redux/product/constant";
 
-const Suppliers: React.FC = () => {
+const Products: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const supplierList: SupplierData[] = useSelector(
-    (state: RootState) => state.supplierReducer.suppliers,
+  const productList: ProductData[] = useSelector(
+    (state: RootState) => state.productReducer.products,
     shallowEqual
   );
 
   useEffect(() => {
     if (loading) {
       setLoading(false);
-      dispatch(getSuppliers());
+      dispatch(getProducts());
     }
   }, [dispatch, loading]);
-  const [supplier, setSupplier] = React.useState<SupplierData>();
+  const [product, setProduct] = React.useState<ProductData>();
   const [visible, setVisible] = React.useState(false);
 
   const onCreate = () => {
-    setSupplier(undefined);
+    setProduct(undefined);
     setVisible(true);
   };
-  const handleSaveSupplier = (sup: SupplierData) => {
-    if (supplier) {
+  const handleSaveProduct = (sup: ProductData) => {
+    if (product) {
       console.log("call update dispatch =>>", sup);
-      dispatch(updateSupplier(sup));
+      dispatch(updateProduct(sup));
     } else {
-      dispatch(createSupplier(sup));
+      dispatch(createProduct(sup));
       console.log("call create dispatch =>>", sup);
     }
     setVisible(false);
     setTimeout(() => setLoading(true), 500);
   };
-  const onUpdate = (sup: SupplierData) => {
-    setSupplier(sup);
+  const onUpdate = (sup: ProductData) => {
+    setProduct(sup);
     setVisible(true);
     console.log(sup);
   };
-  const columns: TableProps<SupplierData>["columns"] = [
+  const columns: TableProps<ProductData>["columns"] = [
     {
-      title: "companyName",
-      dataIndex: "companyName",
-      key: "companyName",
+      title: "id",
+      dataIndex: "id",
+      key: "id",
     },
     {
-      title: "primaryContact",
-      dataIndex: "primaryContact",
-      key: "primaryContact",
+      title: "title",
+      dataIndex: "title",
+      key: "title",
     },
     {
-      title: "email",
-      dataIndex: "email",
-      key: "email",
+      title: "summary",
+      dataIndex: "summary",
+      key: "summary",
     },
     {
-      title: "address",
-      dataIndex: "address",
-      key: "address",
+      title: "type",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: "content",
+      dataIndex: "content",
+      key: "content",
     },
     {
       title: "Action",
       key: "action",
-      render: (_: unknown, record: SupplierData) => (
+      render: (_: unknown, record: ProductData) => (
         <Space size="middle">
           <Button type="link" onClick={() => onUpdate(record)}>
             Update
@@ -81,11 +86,6 @@ const Suppliers: React.FC = () => {
       ),
     },
   ];
-  // console.log("list =>", supplierList);
-  // console.log(Array.isArray(supplierList));
-  // const transformedSupplierList = supplierList.map((supplierData) => ({
-  //   ...supplierData,
-  // }));
   return (
     <>
       <div className="tabled">
@@ -94,7 +94,7 @@ const Suppliers: React.FC = () => {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Suppliers Table"
+              title="Products Table"
               extra={
                 <>
                   <Button
@@ -102,15 +102,15 @@ const Suppliers: React.FC = () => {
                     icon={<PlusOutlined />}
                     onClick={onCreate}
                   >
-                    Create Supplier
+                    Create Product
                   </Button>
                 </>
               }
             >
               <div className="table-responsive">
                 <Table
-                  dataSource={supplierList.map((brand, index) => ({
-                    ...brand,
+                  dataSource={productList.map((product, index) => ({
+                    ...product,
                     key: index,
                   }))}
                   columns={columns}
@@ -121,14 +121,14 @@ const Suppliers: React.FC = () => {
           </Col>
         </Row>
       </div>
-      <SupplierForm
+      <ProductForm
         visible={visible}
         onCancel={() => setVisible(false)}
-        onOk={handleSaveSupplier}
-        initialData={supplier}
+        onOk={handleSaveProduct}
+        initialData={product}
       />
     </>
   );
 };
 
-export default Suppliers;
+export default Products;

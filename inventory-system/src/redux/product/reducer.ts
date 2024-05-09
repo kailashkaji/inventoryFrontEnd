@@ -1,153 +1,154 @@
-import { ResponseSupplier, SupplierData, actionSupplier } from "./constant";
+import { ResponseProduct, ProductData, actionProduct } from "./constant";
 
-interface SupplierState {
+interface ProductState {
   loading: boolean;
   error?: string | null;
   isSuccess: boolean;
   isError: boolean;
-  suppliers: SupplierData[];
+  products: ProductData[];
 }
 
-const initialState: SupplierState = {
-  suppliers: [],
+const initialState: ProductState = {
+  products: [],
   loading: false,
   error: null,
   isSuccess: false,
   isError: false,
 };
 
-const supplierReducer = (
+const productReducer = (
   state = initialState,
-  action: ResponseSupplier
-): SupplierState => {
+  action: ResponseProduct
+): ProductState => {
   const updateState = Object.assign({}, state);
   switch (action.type) {
-    case actionSupplier.ADD_SUPPLIER:
+    case actionProduct.ADD_PRODUCT:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case actionSupplier.ADD_SUPPLIER_SUCCESS: {
-      const supplier: SupplierData[] = Object.assign(
-        state.suppliers,
+    case actionProduct.ADD_PRODUCT_SUCCESS: {
+      console.warn("add product success");
+      const product: ProductData[] = Object.assign(
+        state.products,
         action.result
       );
-      console.warn("add supplier reducer ==>", supplier);
+      console.warn("add product ==>", product);
 
       return {
         ...state,
-        suppliers: supplier,
+        products: product,
         loading: false,
         error: null,
         isSuccess: true,
         isError: false,
       };
     }
-    case actionSupplier.ADD_SUPPLIER_ERROR:
+    case actionProduct.ADD_PRODUCT_ERROR:
       return {
         ...state,
         loading: false,
         error: action.error,
         isSuccess: false,
         isError: true,
-        suppliers: Object.assign({}, state.suppliers, action.result),
+        products: Object.assign({}, state.products, action.result),
       };
-    case actionSupplier.UPDATE_SUPPLIER:
+    case actionProduct.UPDATE_PRODUCT:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case actionSupplier.UPDATE_SUPPLIER_SUCCESS: {
-      console.warn("add supplier success");
-      const supplier: SupplierData[] = Object.assign(
+    case actionProduct.UPDATE_PRODUCT_SUCCESS: {
+      console.warn("add product success");
+      const product: ProductData[] = Object.assign(
         {},
-        state.suppliers,
+        state.products,
         action.result
       );
-      console.warn("add supplier ==>", supplier);
+      console.warn("add product ==>", product);
 
       return {
         ...state,
-        suppliers: supplier,
+        products: product,
         loading: false,
         error: null,
         isSuccess: true,
         isError: false,
       };
     }
-    case actionSupplier.UPDATE_SUPPLIER_ERROR:
+    case actionProduct.UPDATE_PRODUCT_ERROR:
       return {
         ...state,
         loading: false,
         error: action.error,
         isSuccess: false,
         isError: true,
-        suppliers: Object.assign({}, state.suppliers, action.result),
+        products: Object.assign({}, state.products, action.result),
       };
-    case actionSupplier.LOAD_ALL_SUPPLIER:
+    case actionProduct.LOAD_ALL_PRODUCT:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case actionSupplier.LOAD_ALL_SUPPLIER_SUCCESS: {
-      console.warn("get all supplier ==>", action);
+    case actionProduct.LOAD_ALL_PRODUCT_SUCCESS: {
+      console.warn("get all product ==>", action);
 
       return {
         ...state,
-        suppliers: action.result,
+        products: action.result,
         loading: false,
         error: null,
         isSuccess: true,
         isError: false,
       };
     }
-    case actionSupplier.LOAD_ALL_SUPPLIER_ERROR:
+    case actionProduct.LOAD_ALL_PRODUCT_ERROR:
       return {
         ...state,
         loading: false,
         error: action.error,
         isSuccess: false,
         isError: true,
-        suppliers: Object.assign({}, state.suppliers, action.result),
+        products: Object.assign({}, state.products, action.result),
       };
-    case actionSupplier.LOAD_SUPPLIER_REQUEST:
+    case actionProduct.LOAD_PRODUCT_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case actionSupplier.LOAD_SUPPLIER_SUCCESS: {
-      console.warn("add supplier success");
-      const supplier: SupplierData[] = Object.assign(
+    case actionProduct.LOAD_PRODUCT_SUCCESS: {
+      console.warn("add product success");
+      const product: ProductData[] = Object.assign(
         {},
-        state.suppliers,
+        state.products,
         action.result
       );
-      console.warn("add supplier ==>", supplier);
+      console.warn("add product ==>", product);
 
       return {
         ...state,
-        suppliers: supplier,
+        products: product,
         loading: false,
         error: null,
         isSuccess: true,
         isError: false,
       };
     }
-    case actionSupplier.LOAD_SUPPLIER_ERROR:
+    case actionProduct.LOAD_PRODUCT_ERROR:
       return {
         ...state,
         loading: false,
         error: action.error,
         isSuccess: false,
         isError: true,
-        suppliers: Object.assign({}, state.suppliers, action.result),
+        products: Object.assign({}, state.products, action.result),
       };
     default:
       return updateState;
   }
 };
-export default supplierReducer;
+export default productReducer;

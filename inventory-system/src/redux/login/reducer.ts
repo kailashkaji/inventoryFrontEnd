@@ -61,9 +61,9 @@ const loginReducer = (state = initialState, action: ActionLogin) => {
     case actionTypesLogin.USER_LOGIN_SUCCESS:
       console.warn("User Logged In Successfully");
       if (action.result) {
-        localStorage.setItem("access_token", action.result.accessToken);
+        //localStorage.setItem("access_token", action.result.accessToken);
         //localStorage.setItem("expires_in", action.result.expires_in.toString());
-        localStorage.setItem("refresh_token", action.result.token);
+        //localStorage.setItem("refresh_token", action.result.token);
         //localStorage.setItem("token_type", action.result.token_type);
       }
       return {
