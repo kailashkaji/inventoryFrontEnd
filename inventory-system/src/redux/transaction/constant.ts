@@ -13,7 +13,10 @@ export const actionTransaction = {
     DELETE_TRANSACTION: "DELETE_TRANSACTION" as const,
     DELETE_TRANSACTION_SUCCESS: "DELETE_TRANSACTION_SUCCESS" as const,
     DELETE_TRANSACTION_ERROR: "DELETE_TRANSACTION_ERROR" as const,
-};
+    LOAD_ALL_TRANSACTION: "LOAD_ALL_TRANSACTION" as const,
+    LOAD_ALL_TRANSACTION_SUCCESS: "LOAD_ALL_TRANSACTION_SUCCESS" as const, // Added this line
+    LOAD_ALL_TRANSACTION_ERROR: "LOAD_ALL_TRANSACTION_ERROR" as const
+  };
 
 // Transaction interface
 interface Transaction {
@@ -41,4 +44,4 @@ interface ResponseTransaction {
     error?: string;
 }
 
-export type { ActionTransaction, ResponseTransaction };
+export type { ActionTransaction, ResponseTransaction, Transaction };

@@ -1,32 +1,32 @@
-import { SupplierData, actionSupplier } from "./constant";
+import { Transaction, actionTransaction } from "./constant";
 
-export const createSupplier = (data: SupplierData) => {
-  console.warn("supplier create action", data);
+export const createTransaction = (data: Transaction) => {
+  console.warn("transaction create action", data);
   return {
-    type: actionSupplier.ADD_SUPPLIER,
+    type: actionTransaction.ADD_TRANSACTION,
     payload: data,
   };
 };
 
-export const updateSupplier = (data: SupplierData) => {
-  console.warn("supplier update action", data);
+export const updateTransaction = (data: Transaction) => {
+  console.warn("transaction update action", data);
   return {
-    type: actionSupplier.UPDATE_SUPPLIER,
+    type: actionTransaction.UPDATE_TRANSACTION,
     payload: data,
   };
 };
 
-export const getSupplierById = (data: SupplierData) => {
-  console.warn("supplier get by id", data);
+export const getTransactionById = (data: Transaction) => {
+  console.warn("transaction get by id", data);
   return {
-    type: actionSupplier.LOAD_SUPPLIER_REQUEST,
+    type: actionTransaction.LOAD_TRANSACTION_REQUEST,
     payload: data,
   };
 };
 
-export const getSuppliers = () => {
-  console.warn("supplier get all");
+export const getTransactions = () => {
+  console.warn("transaction get all");
   return {
-    type: actionSupplier.LOAD_ALL_SUPPLIER,
+    type: actionTransaction.LOAD_ALL_TRANSACTION,
   };
 };
