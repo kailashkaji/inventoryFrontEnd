@@ -1,7 +1,7 @@
 import { Menu, Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
-import { ProductFilled } from "@ant-design/icons";
+import { AppstoreFilled, ProductFilled } from "@ant-design/icons";
 
 function Sidenav({ color }: { color: string }) {
   const { pathname } = useLocation();
@@ -202,6 +202,19 @@ function Sidenav({ color }: { color: string }) {
               <ProductFilled />
             </span>
             <span className="label">product</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="6">
+          <NavLink to="/item">
+            <span
+              className="icon"
+              style={{
+                background: page === "item" ? color : "",
+              }}
+            >
+              <AppstoreFilled />
+            </span>
+            <span className="label">Item</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item className="menu-item-header" key="9">

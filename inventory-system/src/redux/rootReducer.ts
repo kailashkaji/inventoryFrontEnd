@@ -6,6 +6,7 @@ import supplierReducer from "./supplier/reducer";
 import brandReducer from "./brand/reducer";
 import categoryReducer from "./category/reducer";
 import productReducer from "./product/reducer";
+import itemReducer from "./item/reducer";
 
 export default combineReducers({
   helloworld: helloworld,
@@ -15,4 +16,5 @@ export default combineReducers({
   brandReducer: brandReducer,
   categoryReducer: categoryReducer,
   productReducer: productReducer,
+  itemReducer: itemReducer,
 });
