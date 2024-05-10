@@ -90,14 +90,18 @@ function* fetchTransactionById(action: {
     const headerParms = {
       "Content-Type": "application/json",
     };
-    const response = yield call(
-      getTransactionById,
-      action.payload.id,
-      headerParms
-    );
-    console.warn("transaction get by id ===>", response);
-    const result = response.data;
-    yield put({ type: actionTransaction.LOAD_TRANSACTION_SUCCESS, result });
+    const { payload } = action;
+    if (payload.id !== undefined) { 
+      const response = yield call({
+        fn: getTransactionById,
+        context: null,
+      }, payload.id, headerParms);
+      console.warn("transaction get by id ===>", response);
+      const result = response.data;
+      yield put({ type: actionTransaction.LOAD_TRANSACTION_SUCCESS, result });
+    } else {
+      throw new Error("Transaction ID is undefined");
+    }
   } catch (error) {
     yield put({
       type: actionTransaction.LOAD_TRANSACTION_ERROR,
