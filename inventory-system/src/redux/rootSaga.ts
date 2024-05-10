@@ -6,6 +6,7 @@ import supplierSaga from "./supplier/saga";
 import brandSaga from "./brand/saga";
 import categorySaga from "./category/saga";
 import productSaga from "./product/saga";
+import itemSaga from "./item/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga() {
     brandSaga(),
     categorySaga(),
     productSaga(),
+    itemSaga(),
   ]);
 }
