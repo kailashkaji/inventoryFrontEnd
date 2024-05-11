@@ -1,6 +1,7 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, TreeDataNode, TreeSelect } from "antd";
 import { ProductData } from "../../redux/product/constant";
 import { useEffect, useState } from "react";
+import { CategoryData } from "../../redux/category/constant";
 //import { useState } from "react";
 
 interface ProductFormProps {
@@ -8,6 +9,7 @@ interface ProductFormProps {
   onCancel: () => void;
   onOk: (product: ProductData) => void;
   initialData?: ProductData;
+  categoryData: CategoryData[];
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({
@@ -15,20 +17,34 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onCancel,
   onOk,
   initialData,
+  categoryData,
 }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (visible == true) {
-      console.log("data ==>", initialData);
-      form.setFieldsValue(initialData);
+      const temp = {
+        ...initialData,
+        productCategoryLinkIds: initialData?.productCategoryLink?.map(
+          (item) => item.categoryId
+        ),
+      };
+      console.log("apple =>", temp);
+      form.setFieldsValue(temp);
       setIsLoading(false);
     }
   }, [form, initialData, visible]);
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      onOk({ ...initialData, ...values });
+      const productCategoryLink = values.productCategoryLinkIds.map(
+        (item: number) => ({ categoryId: item })
+      );
+      onOk({
+        ...initialData,
+        ...values,
+        productCategoryLink: productCategoryLink,
+      });
       form.resetFields();
       onCancel();
     });
@@ -40,6 +56,13 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const handleClose = () => {
     form.resetFields();
   };
+  const dig = (categories: CategoryData[]): TreeDataNode[] =>
+    categories.map((item) => ({
+      title: item.title,
+      key: item.id,
+      value: item.id,
+      children: item.childCategory ? dig(item.childCategory) : [],
+    }));
 
   return (
     <>
@@ -62,6 +85,42 @@ const ProductForm: React.FC<ProductFormProps> = ({
               rules={[{ required: true, message: "Please input the title!" }]}
             >
               <Input placeholder="fishing rod" />
+            </Form.Item>
+            <Form.Item
+              name={"productCategoryLinkIds"}
+              label="category"
+              rules={[
+                { required: true, message: "Please select the category!" },
+              ]}
+              // getValueFromEvent={(values) => {
+              //   return values.map((id: number) => ({ id }));
+              // }}
+              // getValueProps={(ids) => {
+              //   return ids?.map(({ id }: { id: number }) => id);
+              // }}
+            >
+              <TreeSelect
+                showSearch
+                style={{ width: "100%" }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                placeholder="Please select"
+                allowClear
+                multiple
+                treeDefaultExpandAll
+                treeData={dig(categoryData)}
+                // value={form
+                //   .getFieldValue("productCategoryLink")
+                //   ?.map((item: ProductCategoryLink) => ({
+                //     categoryId: item.categoryId,
+                //   }))}
+                // onChange={(value) =>
+                //   form.setFieldsValue({
+                //     productCategoryLink: value.map(
+                //       (item: ProductCategoryLink) => item.categoryId
+                //     ),
+                //   })
+                // }
+              />
             </Form.Item>
             <Form.Item
               name="summary"

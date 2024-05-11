@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Space, TableProps, Card, Row, Col } from "antd";
+import { Table, Button, Space, TableProps, Card, Row, Col, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ProductForm from "./modal/addUpdateViewProduct";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,8 @@ import {
   updateProduct,
 } from "../redux/product/action";
 import { ProductData } from "../redux/product/constant";
+import { getCategoryTree } from "../redux/category/action";
+import { CategoryData } from "../redux/category/constant";
 
 const Products: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -18,11 +20,16 @@ const Products: React.FC = () => {
     (state: RootState) => state.productReducer.products,
     shallowEqual
   );
+  const categoryList: CategoryData[] = useSelector(
+    (state: RootState) => state.categoryReducer.categorys,
+    shallowEqual
+  );
 
   useEffect(() => {
     if (loading) {
-      setLoading(false);
       dispatch(getProducts());
+      dispatch(getCategoryTree());
+      setLoading(false);
     }
   }, [dispatch, loading]);
   const [product, setProduct] = React.useState<ProductData>();
@@ -43,6 +50,23 @@ const Products: React.FC = () => {
     setVisible(false);
     setTimeout(() => setLoading(true), 500);
   };
+
+  const findCategoryName = (
+    id: number,
+    categoryList: CategoryData[]
+  ): string | null => {
+    for (const category of categoryList) {
+      if (category.id === id) {
+        return category.title ?? null;
+      }
+      if (category.childCategory) {
+        const foundName = findCategoryName(id, category.childCategory);
+        if (foundName) return foundName;
+      }
+    }
+    return null;
+  };
+
   const onUpdate = (sup: ProductData) => {
     setProduct(sup);
     setVisible(true);
@@ -68,6 +92,24 @@ const Products: React.FC = () => {
       title: "type",
       dataIndex: "type",
       key: "type",
+    },
+    {
+      title: "Categories",
+      key: "productCategoryLink",
+      dataIndex: "productCategoryLink",
+      render: (_, { productCategoryLink }) => (
+        <>
+          {productCategoryLink?.map((tag) => {
+            if (tag.categoryId !== undefined) {
+              const categoryName = findCategoryName(
+                tag.categoryId,
+                categoryList
+              );
+              return <Tag key={tag.categoryId}>{categoryName}</Tag>;
+            }
+          })}
+        </>
+      ),
     },
     {
       title: "content",
@@ -126,6 +168,7 @@ const Products: React.FC = () => {
         onCancel={() => setVisible(false)}
         onOk={handleSaveProduct}
         initialData={product}
+        categoryData={categoryList}
       />
     </>
   );

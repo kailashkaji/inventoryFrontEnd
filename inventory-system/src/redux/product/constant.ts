@@ -14,13 +14,18 @@ export const actionProduct = {
 };
 
 type ActionProduct = (typeof actionProduct)[keyof typeof actionProduct];
-
+interface ProductCategoryLink {
+  id?: number;
+  productId?: number;
+  categoryId?: number;
+}
 interface ProductData {
   id: number;
   title?: string;
   summary?: string;
   type?: string;
   content?: string;
+  productCategoryLink?: ProductCategoryLink[];
 }
 
 interface ResponseProduct {
@@ -29,4 +34,9 @@ interface ResponseProduct {
   result: ProductData[];
   error?: string;
 }
-export type { ActionProduct, ProductData, ResponseProduct };
+export type {
+  ActionProduct,
+  ProductData,
+  ResponseProduct,
+  ProductCategoryLink,
+};
