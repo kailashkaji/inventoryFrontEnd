@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Space, TableProps, Card, Row, Col } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ItemForm from "./modal/addUpdateViewItem";
-import AddOrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { createItem, getItems, updateItem } from "../redux/item/action";
@@ -17,7 +16,6 @@ const Items: React.FC = () => {
   const dispatch = useDispatch();
   const [item, setItem] = React.useState<ItemData>();
   const [visible, setVisible] = React.useState(false);
-  const [showAddOrderForm, setShowAddOrderForm] = React.useState(false);
   const itemList: ItemData[] = useSelector(
     (state: RootState) => state.itemReducer.items,
     shallowEqual
@@ -62,10 +60,6 @@ const Items: React.FC = () => {
     setItem(sup);
     setVisible(true);
     console.log(sup);
-  };
-
-  const handleCreateOrder = () => {
-    setShowAddOrderForm(true);
   };
 
   const columns: TableProps<ItemData>["columns"] = [
@@ -126,9 +120,6 @@ const Items: React.FC = () => {
           <Button type="link" onClick={() => onUpdate(record)}>
             Update
           </Button>
-          <Button type="link" onClick={() => setShowAddOrderForm(true)}>
-            Create order
-          </Button>
         </Space>
       ),
     },
@@ -176,11 +167,6 @@ const Items: React.FC = () => {
         initialData={item}
         productList={productList}
         brandList={brandList}
-      />
-      <AddOrderForm
-        visible={showAddOrderForm}
-        onCancel={() => setShowAddOrderForm(false)}
-        onOk={(order) => { /* Handle saving the order */ }}
       />
     </>
   );
