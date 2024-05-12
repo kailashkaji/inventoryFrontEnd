@@ -10,7 +10,7 @@ interface OrderState {
 
 const initialState: OrderState = {
   orders: [],
-  loading: false,
+  loading: true,
   error: null,
   isSuccess: false,
   isError: false,
@@ -70,7 +70,7 @@ const orderReducer = (
 
       return {
         ...state,
-        orders: [...state.orders, action.payload!],
+        orders: action.result,
         loading: false,
         error: null,
         isSuccess: true,

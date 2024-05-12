@@ -8,19 +8,21 @@ import { getAllOrders, createOrder, getOrderById } from "../redux/order/action";
 import { Order } from "../redux/order/constant";
 
 const Orders: React.FC = () => {
-  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const orderList: Order[] = useSelector(
     (state: RootState) => state.orderReducer.orders ?? [],
     shallowEqual
   );
+  const loading: boolean = useSelector(
+    (state: RootState) => state.orderReducer.loading,
+    shallowEqual
+  );
 
   useEffect(() => {
     if (loading) {
-      setLoading(false);
       dispatch(getAllOrders());
+      //alert(getAllOrders.toString());
     }
-    alert(getAllOrders.toString());
   }, [dispatch, loading]);
 
   const [order, setOrder] = React.useState<Order>();
@@ -35,7 +37,6 @@ const Orders: React.FC = () => {
     dispatch(createOrder(order));
     console.log("call create dispatch =>>", order);
     setVisible(false);
-    setTimeout(() => setLoading(true), 500);
   };
 
   const handleViewTransaction = (record: Order) => {
