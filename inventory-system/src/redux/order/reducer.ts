@@ -55,14 +55,18 @@ const orderReducer = (
         isSuccess: true,
         isError: false,
       };
-      case actionOrder.LOAD_ALL_ORDER:
+
+    case actionOrder.LOAD_ALL_ORDER:
       return {
         ...state,
+        orders: [],
         loading: true,
+        isSuccess: false,
         error: null,
       };
+
     case actionOrder.LOAD_ALL_ORDER_SUCCESS: {
-      console.warn("get all supplier ==>", action);
+      console.warn("get all order result ==>", action);
 
       return {
         ...state,
@@ -80,7 +84,7 @@ const orderReducer = (
         error: action.error,
         isSuccess: false,
         isError: true,
-        orders: Object.assign({}, state.orders, [...state.orders, action.payload!]),
+        orders: [],
       };
     default:
       return state;

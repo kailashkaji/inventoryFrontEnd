@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Space, TableProps, Card, Row, Col } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Space, TableProps, Card, Row, Col, Modal } from "antd";
+import { PlusOutlined, EyeOutlined } from "@ant-design/icons";
 import OrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -11,19 +11,21 @@ const Orders: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const orderList: Order[] = useSelector(
-    (state: RootState) => state.orderReducer.orders,
+    (state: RootState) => state.orderReducer.orders ?? [],
     shallowEqual
   );
 
   useEffect(() => {
     if (loading) {
       setLoading(false);
-     dispatch(getAllOrders());
+      dispatch(getAllOrders());
     }
+    alert(getAllOrders.toString());
   }, [dispatch, loading]);
 
   const [order, setOrder] = React.useState<Order>();
   const [visible, setVisible] = useState(false);
+
   const onCreate = () => {
     setOrder(undefined);
     setVisible(true);
@@ -36,23 +38,61 @@ const Orders: React.FC = () => {
     setTimeout(() => setLoading(true), 500);
   };
 
+  const handleViewTransaction = (record: Order) => {
+    dispatch(getOrderById(record.id!));
+    Modal.info({
+      title: `View Transaction ID: ${record.id}`,
+      content: (
+        <div>
+          {/* Render the details of the order */}
+          <p>UserID: {record.userId}</p>
+          {/* Add more order details as needed */}
+        </div>
+      ),
+      onOk() {},
+    });
+  };
+
   const columns: TableProps<Order>["columns"] = [
     {
-      title: "Ordered By",
-      dataIndex: "Ordered By",
-      key: "userId",
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+    },
+    // {
+    //   title: "Order Item",
+    //   dataIndex: "orderItem", // Assuming orderItem is an array of items
+    //   key: "orderItem",
+    //   render: (orderItems: any[]) => (
+    //     <ul>
+    //       {orderItems.map((item, index) => (
+    //         <li key={index}>{item}</li>
+    //       ))}
+    //     </ul>
+    //   ),
+    // },
+    {
+      title: "type",
+      dataIndex: "type",
+      key: "type",
     },
     {
-      title: "Order Item",
-      dataIndex: "OrderItem",
-      key: "OrderItem",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
     },
     {
       title: "Action",
-      key: "View Transaction",
+      key: "action",
       render: (_, record) => (
         <Space size="middle">
-          
+          <Button
+            type="link"
+            icon={<EyeOutlined />}
+            onClick={() => handleViewTransaction(record)}
+          >
+            View Transaction
+          </Button>
         </Space>
       ),
     },
@@ -66,7 +106,7 @@ const Orders: React.FC = () => {
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Suppliers Table"
+              title="Order Table"
               extra={
                 <Button
                   type="primary"

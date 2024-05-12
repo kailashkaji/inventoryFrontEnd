@@ -36,7 +36,7 @@ function* fetchAllOrder(): Generator<unknown, void, AxiosResponse> {
     const result = response.data;
     yield put({ type: actionOrder.LOAD_ALL_ORDER_SUCCESS, result });
   } catch (error) {
-    console.warn("get all supplier error", error);
+    console.warn("get all order error", error);
     yield put({
       type: actionOrder.LOAD_ALL_ORDER_ERROR,
       error: JSON.stringify(error),

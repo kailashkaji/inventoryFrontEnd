@@ -134,11 +134,14 @@ function Sidenav({ color }: { color: string }) {
     <>
       <div className="brand">
         <img src={logo} alt="" />
-        <span>Inventory System</span>
+        <span>Retail Inventory System</span>
       </div>
       <hr />
 
       <Menu theme="light" mode="inline">
+        <Menu.Item className="menu-item-header" key="analytics">
+          Analytics
+        </Menu.Item>
         <Menu.Item key="1">
           <NavLink to="/dashboard">
             <span
@@ -151,6 +154,9 @@ function Sidenav({ color }: { color: string }) {
             </span>
             <span className="label">Dashboard</span>
           </NavLink>
+        </Menu.Item>
+        <Menu.Item className="menu-item-header" key="im">
+          Inventory Management
         </Menu.Item>
         <Menu.Item key="2">
           <NavLink to="/supplier">
@@ -231,7 +237,7 @@ function Sidenav({ color }: { color: string }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item className="menu-item-header" key="9">
-          Account Pages
+          User Information
         </Menu.Item>
         <Menu.Item key="10">
           <NavLink to="/profile">
@@ -244,18 +250,6 @@ function Sidenav({ color }: { color: string }) {
               {profile}
             </span>
             <span className="label">Profile</span>
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="11">
-          <NavLink to="/sign-in">
-            <span className="icon">{signin}</span>
-            <span className="label">Sign In</span>
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="12">
-          <NavLink to="/sign-up">
-            <span className="icon">{signup}</span>
-            <span className="label">Sign Up</span>
           </NavLink>
         </Menu.Item>
       </Menu>

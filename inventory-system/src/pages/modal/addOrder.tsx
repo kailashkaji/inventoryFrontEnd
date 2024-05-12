@@ -1,88 +1,88 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Button } from "antd";
-import { Order } from "../../redux/order/constant";
+import React, { useState, useEffect } from "react";
+import { Modal, Form, InputNumber, Button } from "antd";
+import { Order, OrderItem } from "../../redux/order/constant";
 
-interface OrderFormProps {
-  visible: boolean;
-  onCancel: () => void;
-  onOk: (order: Order) => void;
-  initialData?: Order;
+interface AddOrderFormProps {
+    visible: boolean;
+    onCancel: () => void;
+    onOk: (order: Order) => void;
 }
 
-const OrderForm: React.FC<OrderFormProps> = ({
-  visible,
-  onCancel,
-  onOk,
-  initialData,
+const AddOrderForm: React.FC<AddOrderFormProps> = ({
+    visible,
+    onCancel,
+    onOk,
 }) => {
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
+    const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+    const [quantity, setQuantity] = useState<number>(1);
+    const [finalAmount, setFinalAmount] = useState<number>(0);
 
-  const handleSubmit = async () => {
-    try {
-      const values = await form.validateFields();
-      setLoading(true);
-      onOk(values);
-    } catch (error) {
-      console.error("Validation failed:", error);
-    }
-  };
+    useEffect(() => {
+        calculateFinalAmount();
+    }, [orderItems, quantity]);
 
-  return (
-    <Modal
-      title={initialData ? "Update Order" : "Create Order"}
-      visible={visible}
-      onCancel={onCancel}
-      footer={[
-        <Button key="cancel" onClick={onCancel}>
-          Cancel
-        </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          loading={loading}
-          onClick={handleSubmit}
+    const calculateFinalAmount = () => {
+        const unitPrice = 10; // get mrp
+        const totalAmount = unitPrice * orderItems.length * quantity;
+        setFinalAmount(totalAmount);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+            const values = await form.validateFields();
+            const order: Order = {
+                id: values.id,
+                userId: values.userId,
+                type: values.type,
+                status: values.status,
+                grandTotal: finalAmount,
+                orderItem: orderItems,
+                // Add more properties
+            };
+            onOk(order);
+        } catch (error) {
+            console.error("Error submitting form:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Modal
+            title="Add Order"
+            visible={visible}
+            onCancel={onCancel}
+            footer={[
+                <Button key="cancel" onClick={onCancel}>
+                    Cancel
+                </Button>,
+                <Button
+                    key="submit"
+                    type="primary"
+                    loading={loading}
+                    onClick={handleSubmit}
+                >
+                    Submit
+                </Button>,
+            ]}
         >
-          {initialData ? "Update" : "Create"}
-        </Button>,
-      ]}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={initialData}
-      >
-        <Form.Item
-          name="companyName"
-          label="Company Name"
-          rules={[{ required: true, message: "Please enter company name" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="primaryContact"
-          label="Primary Contact"
-          rules={[{ required: true, message: "Please enter primary contact" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[{ required: true, message: "Please enter email" }]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[{ required: true, message: "Please enter address" }]}
-        >
-          <Input.TextArea />
-        </Form.Item>
-      </Form>
-    </Modal>
-  );
+            <Form form={form} layout="vertical">
+                <Form.Item label="Quantity">
+                    <InputNumber
+                        min={1}
+                        value={quantity}
+                        onChange={(value) => setQuantity(value as number)}
+                    />
+                </Form.Item>
+                <Form.Item label="Final Amount">
+                    <InputNumber disabled value={finalAmount} />
+                </Form.Item>
+            </Form>
+        </Modal>
+    );
 };
 
-export default OrderForm;
+export default AddOrderForm;
