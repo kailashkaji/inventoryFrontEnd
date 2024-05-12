@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ActionOrder, actionOrder, Order } from "./constant";
-import { createOrder, getOrderById } from "../../http/order";
+import { createOrder, getOrderById, getAllOrders } from "../../http/order";
 import { AxiosResponse } from "axios";
 
 function* createOrderSaga(action: { type: ActionOrder; payload: Order }): Generator<unknown, void, AxiosResponse<Order>> {
@@ -27,8 +27,26 @@ function* fetchOrderById(action: { type: ActionOrder; payload: Order }): Generat
   }
 }
 
+function* fetchAllOrder(): Generator<unknown, void, AxiosResponse> {
+  try {
+    const headerParms = {
+      "Content-Type": "application/json",
+    };
+    const response = yield call(getAllOrders, headerParms);
+    const result = response.data;
+    yield put({ type: actionOrder.LOAD_ALL_ORDER_SUCCESS, result });
+  } catch (error) {
+    console.warn("get all supplier error", error);
+    yield put({
+      type: actionOrder.LOAD_ALL_ORDER_ERROR,
+      error: JSON.stringify(error),
+    });
+  }
+}
+
 function* orderSaga() {
   yield takeLatest(actionOrder.CREATE_ORDER, createOrderSaga);
+  yield takeLatest(actionOrder.LOAD_ALL_ORDER, fetchAllOrder);
   yield takeLatest(actionOrder.GET_ORDER_BY_ID, fetchOrderById);
 }
 

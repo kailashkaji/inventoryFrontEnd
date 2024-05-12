@@ -15,3 +15,10 @@ export const getOrderById = (id: number) => {
     payload: id,
   };
 };
+
+export const getAllOrders = () => {
+  console.warn("get all orders");
+  return {
+    type: actionOrder.LOAD_ALL_ORDER,
+  };
+};

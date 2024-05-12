@@ -222,7 +222,7 @@ function Sidenav({ color }: { color: string }) {
             <span
               className="icon"
               style={{
-                background: page === "item" ? color : "",
+                background: page === "order" ? color : "",
               }}
             >
               <AppstoreFilled />

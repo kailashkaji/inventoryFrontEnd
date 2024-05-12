@@ -7,8 +7,8 @@ export const actionOrder = {
     GET_ORDER_BY_ID_SUCCESS: "GET_ORDER_BY_ID_SUCCESS" as const,
     GET_ORDER_BY_ID_ERROR: "GET_ORDER_BY_ID_ERROR" as const,
     LOAD_ALL_ORDER: "LOAD_ALL_ORDER" as const,
-    LOAD_ALL_ORDER_SUCCESS: "LOAD_ALL_SUPPLIER_SUCCESS" as const,
-    LOAD_ALL_ORDER_ERROR: "LOAD_ALL_SUPPLIER_ERROR" as const
+    LOAD_ALL_ORDER_SUCCESS: "LOAD_ALL_ORDER_SUCCESS" as const,
+    LOAD_ALL_ORDER_ERROR: "LOAD_ALL_ORDER_ERROR" as const
 };
 
 type ActionOrder = (typeof actionOrder)[keyof typeof actionOrder];

@@ -4,10 +4,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import OrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { getOrders, createOrder, getOrderById } from "../redux/order/action";
+import { getAllOrders, createOrder, getOrderById } from "../redux/order/action";
 import { Order } from "../redux/order/constant";
-
-
 
 const Orders: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -20,7 +18,7 @@ const Orders: React.FC = () => {
   useEffect(() => {
     if (loading) {
       setLoading(false);
-     dispatch(getOrders());
+     dispatch(getAllOrders());
     }
   }, [dispatch, loading]);
 
@@ -40,28 +38,18 @@ const Orders: React.FC = () => {
 
   const columns: TableProps<Order>["columns"] = [
     {
-      title: "Company Name",
-      dataIndex: "companyName",
-      key: "companyName",
+      title: "Ordered By",
+      dataIndex: "Ordered By",
+      key: "userId",
     },
     {
-      title: "Primary Contact",
-      dataIndex: "primaryContact",
-      key: "primaryContact",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Order Item",
+      dataIndex: "OrderItem",
+      key: "OrderItem",
     },
     {
       title: "Action",
-      key: "action",
+      key: "View Transaction",
       render: (_, record) => (
         <Space size="middle">
           
