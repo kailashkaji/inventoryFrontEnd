@@ -10,7 +10,7 @@ interface OrderState {
 
 const initialState: OrderState = {
   orders: [],
-  loading: true,
+  loading: false,
   error: null,
   isSuccess: false,
   isError: false,
@@ -31,7 +31,7 @@ const orderReducer = (
     case actionOrder.CREATE_ORDER_SUCCESS:
       return {
         ...state,
-        orders: [...state.orders, action.payload!],
+        orders: action.result,
         loading: false,
         error: null,
         isSuccess: true,
@@ -56,7 +56,8 @@ const orderReducer = (
         isError: false,
       };
 
-    case actionOrder.LOAD_ALL_ORDER:
+    case actionOrder.LOAD_ALL_ORDER: {
+      console.warn("this is called");
       return {
         ...state,
         orders: [],
@@ -64,6 +65,7 @@ const orderReducer = (
         isSuccess: false,
         error: null,
       };
+    }
 
     case actionOrder.LOAD_ALL_ORDER_SUCCESS: {
       console.warn("get all order result ==>", action);

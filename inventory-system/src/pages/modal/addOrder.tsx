@@ -1,90 +1,192 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Form, InputNumber, Button } from "antd";
+import { Button, Card, Form, Input, Modal, Select, Statistic } from "antd";
 import { Order, OrderItem } from "../../redux/order/constant";
+import { useEffect, useState } from "react";
+import EditAbleTable from "../../components/editableTree/EditableTable";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { SupplierData } from "../../redux/supplier/constant";
+import { RootState } from "../../redux/store";
+import { getItems } from "../../redux/item/action";
+//import { useState } from "react";
 
-interface AddOrderFormProps {
+interface OrderFormProps {
   visible: boolean;
   onCancel: () => void;
   onOk: (order: Order) => void;
+  updateTotal: (total: number) => void;
   initialData?: Order;
 }
 
-const AddOrderForm: React.FC<AddOrderFormProps> = ({
+const OrderForm: React.FC<OrderFormProps> = ({
   visible,
   onCancel,
   onOk,
+  updateTotal,
   initialData,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
-  const [quantity, setQuantity] = useState<number>(1);
-  const [finalAmount, setFinalAmount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>(
+    initialData?.orderItem || []
+  );
+  const disabled = initialData?.id != undefined;
 
+  const vendorList: SupplierData[] = useSelector(
+    (state: RootState) => state.supplierReducer.suppliers,
+    shallowEqual
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
-    calculateFinalAmount();
-  }, [orderItems, quantity]);
+    if (visible == true) {
+      console.log("data ==>", initialData);
+      dispatch(getItems());
+      form.setFieldsValue(initialData);
+      setIsLoading(false);
+    }
+  }, [dispatch, form, initialData, visible]);
 
-  const calculateFinalAmount = () => {
-    const unitPrice = 10; // get mrp
-    const totalAmount = unitPrice * orderItems.length * quantity;
-    setFinalAmount(totalAmount);
+  const handleOk = () => {
+    form.validateFields().then((values) => {
+      console.log("final result:", values);
+
+      onOk({
+        ...initialData,
+        ...values,
+        orderItem: orderItems,
+      });
+
+      form.resetFields();
+      onCancel();
+    });
+  };
+  const handleCancel = () => {
+    form.resetFields();
+    onCancel();
+  };
+  const handleClose = () => {
+    form.resetFields();
+  };
+  const handleOrderItemsUpdate = (items: OrderItem[]) => {
+    setOrderItems(items); // Update orderItems state
+    const grandTotal = items.reduce(
+      (total, item) => total + (item.orderedQuantity || 0) * (item.price || 0),
+      0
+    );
+
+    updateTotal(grandTotal);
   };
 
-  const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      const values = await form.validateFields();
-      const order: Order = {
-        id: values.id,
-        userId: values.userId,
-        type: values.type,
-        status: values.status,
-        grandTotal: finalAmount,
-        orderItem: orderItems,
-        // Add more properties
-      };
-      onOk(order);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setLoading(false);
-    }
+  // const handleDataFromChild = (childData: OrderItem[]) => {
+  //   let total = 0;
+  //   childData.forEach((item) => {
+  //     total = total + item.amount;
+  //   });
+  //   return {
+  //     ...initialData,
+  //     orderItem: childData,
+  //   };
+  // };
+
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: number }
+  ) => {
+    console.log(option?.label, "+", input);
+    return (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   };
 
   return (
-    <Modal
-      title="Add Order"
-      open={visible}
-      onCancel={onCancel}
-      footer={[
-        <Button key="cancel" onClick={onCancel}>
-          Cancel
-        </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          loading={loading}
-          onClick={handleSubmit}
+    <>
+      {isLoading == false && (
+        <Modal
+          width={1000}
+          title={disabled ? "View Order" : "Create Purchase Order"}
+          open={visible}
+          afterClose={handleClose}
+          onCancel={handleCancel}
+          onOk={handleOk}
+          destroyOnClose={true}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              Cancel
+            </Button>,
+            !disabled && (
+              <Button key="submit" type="primary" onClick={handleOk}>
+                Ok
+              </Button>
+            ),
+          ]}
+          styles={{
+            body: { overflowY: "auto", maxHeight: "calc(100vh - 200px)" },
+          }}
         >
-          Submit
-        </Button>,
-      ]}
-    >
-      <Form form={form} layout="vertical">
-        <Form.Item label="Quantity">
-          <InputNumber
-            min={1}
-            value={quantity}
-            onChange={(value) => setQuantity(value as number)}
-          />
-        </Form.Item>
-        <Form.Item label="Final Amount">
-          <InputNumber disabled value={finalAmount} />
-        </Form.Item>
-      </Form>
-    </Modal>
+          <Form form={form} layout="vertical">
+            <Form.Item
+              name="userId"
+              label="Vendor Name"
+              rules={[
+                { required: true, message: "Please select the Vendor Name!" },
+              ]}
+            >
+              <Select
+                showSearch
+                filterOption={filterOption}
+                options={vendorList.map((item) => ({
+                  value: item.id,
+                  label: item?.companyName ?? "",
+                }))}
+                disabled={disabled}
+              />
+            </Form.Item>
+            <Form.Item
+              name="Delivery Address"
+              label="Delivery Address"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input the delivery address!",
+                },
+              ]}
+            >
+              <Input disabled={disabled} />
+            </Form.Item>
+            <Form.Item
+              name="Purchase Order Number"
+              label="Purchase Order Number"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input the Purchase Order Number!",
+                },
+              ]}
+            >
+              <Input disabled={disabled} />
+            </Form.Item>
+            <Form.Item name="orderItem">
+              <EditAbleTable
+                disabled={disabled}
+                initialData={initialData?.orderItem}
+                onUpdateOrderItems={handleOrderItemsUpdate}
+              />
+            </Form.Item>
+          </Form>
+          <Card
+            bordered={false}
+            className="widget-2 h-full"
+            style={{ float: "right" }}
+          >
+            <Statistic
+              title={
+                <>
+                  <h6>Total</h6>
+                </>
+              }
+              value={initialData?.total}
+            />
+          </Card>
+        </Modal>
+      )}
+    </>
   );
 };
 
-export default AddOrderForm;
+export default OrderForm;

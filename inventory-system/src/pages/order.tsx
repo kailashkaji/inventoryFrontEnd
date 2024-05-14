@@ -1,40 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Space, TableProps, Card, Row, Col, Modal } from "antd";
-import { PlusOutlined, EyeOutlined } from "@ant-design/icons";
+import { PlusOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import OrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { getAllOrders, createOrder, getOrderById } from "../redux/order/action";
+import { getSuppliers } from "../redux/supplier/action";
 import { Order } from "../redux/order/constant";
 
 const Orders: React.FC = () => {
   const dispatch = useDispatch();
-  const orderList: Order[] = useSelector(
-    (state: RootState) => state.orderReducer.orders ?? [],
-    shallowEqual
-  );
-  const loading: boolean = useSelector(
-    (state: RootState) => state.orderReducer.loading,
+  const { orders, loading } = useSelector(
+    (state: RootState) => state.orderReducer,
     shallowEqual
   );
 
   useEffect(() => {
-    if (loading) {
-      dispatch(getAllOrders());
-      //alert(getAllOrders.toString());
-    }
-  }, [dispatch, loading]);
+    dispatch(getSuppliers());
+    dispatch(getAllOrders());
+  }, [dispatch]);
 
   const [order, setOrder] = React.useState<Order>();
   const [visible, setVisible] = useState(false);
 
   const onCreate = () => {
-    setOrder(undefined);
+    const newData: Order = {};
+    setOrder(newData);
     setVisible(true);
+  };
+  const updateTotal = (total: number) => {
+    setOrder({ ...order, total: total });
   };
 
   const handleSaveOrder = (order: Order) => {
-    dispatch(createOrder(order));
+    if (order) {
+      //dispatch(updateOrder(order));
+    } else {
+      dispatch(createOrder(order));
+    }
     console.log("call create dispatch =>>", order);
     setVisible(false);
   };
@@ -52,6 +55,12 @@ const Orders: React.FC = () => {
       ),
       onOk() {},
     });
+  };
+
+  const onView = (sup: Order) => {
+    setOrder(sup);
+    setVisible(true);
+    console.log(sup);
   };
 
   const columns: TableProps<Order>["columns"] = [
@@ -86,15 +95,26 @@ const Orders: React.FC = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Space size="middle">
-          <Button
-            type="link"
-            icon={<EyeOutlined />}
-            onClick={() => handleViewTransaction(record)}
-          >
-            View Transaction
-          </Button>
-        </Space>
+        <>
+          <Space size="middle">
+            <Button
+              type="link"
+              icon={<EyeOutlined />}
+              onClick={() => handleViewTransaction(record)}
+            >
+              View Transaction
+            </Button>
+          </Space>
+          <Space size="middle">
+            <Button
+              icon={<EditOutlined />}
+              type="link"
+              onClick={() => onView(record)}
+            >
+              View Order
+            </Button>
+          </Space>
+        </>
       ),
     },
   ];
@@ -120,7 +140,7 @@ const Orders: React.FC = () => {
             >
               <div className="table-responsive">
                 <Table
-                  dataSource={orderList.map((order, index) => ({
+                  dataSource={orders.map((order, index) => ({
                     ...order,
                     key: index,
                   }))}
@@ -138,6 +158,7 @@ const Orders: React.FC = () => {
         onCancel={() => setVisible(false)}
         onOk={handleSaveOrder}
         initialData={order}
+        updateTotal={updateTotal}
       />
     </>
   );

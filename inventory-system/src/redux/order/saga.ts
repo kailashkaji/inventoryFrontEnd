@@ -3,27 +3,55 @@ import { ActionOrder, actionOrder, Order } from "./constant";
 import { createOrder, getOrderById, getAllOrders } from "../../http/order";
 import { AxiosResponse } from "axios";
 
-function* createOrderSaga(action: { type: ActionOrder; payload: Order }): Generator<unknown, void, AxiosResponse<Order>> {
+function* createOrderSaga(action: {
+  type: ActionOrder;
+  payload: Order;
+}): Generator<unknown, void, AxiosResponse<Order>> {
   try {
     const headerParams = {
       "Content-Type": "application/json",
     };
-    const response: AxiosResponse<Order> = yield call(createOrder, JSON.stringify(action.payload), headerParams);
-    yield put({ type: actionOrder.CREATE_ORDER_SUCCESS, payload: response.data });
+    const response: AxiosResponse<Order> = yield call(
+      createOrder,
+      JSON.stringify(action.payload),
+      headerParams
+    );
+    console.log(response);
+    const response1 = yield call(getAllOrders, headerParams);
+    yield put({
+      type: actionOrder.CREATE_ORDER_SUCCESS,
+      result: response1.data,
+    });
   } catch (error) {
-    yield put({ type: actionOrder.CREATE_ORDER_ERROR, error: JSON.stringify(error) });
+    yield put({
+      type: actionOrder.CREATE_ORDER_ERROR,
+      error: JSON.stringify(error),
+    });
   }
 }
 
-function* fetchOrderById(action: { type: ActionOrder; payload: Order }): Generator<unknown, void, AxiosResponse<Order>> {
+function* fetchOrderById(action: {
+  type: ActionOrder;
+  payload: Order;
+}): Generator<unknown, void, AxiosResponse<Order>> {
   try {
     const headerParams = {
       "Content-Type": "application/json",
     };
-    const response: AxiosResponse<Order> = yield call(getOrderById, action.payload.id!, headerParams);
-    yield put({ type: actionOrder.GET_ORDER_BY_ID_SUCCESS, payload: response.data });
+    const response: AxiosResponse<Order> = yield call(
+      getOrderById,
+      action.payload.id!,
+      headerParams
+    );
+    yield put({
+      type: actionOrder.GET_ORDER_BY_ID_SUCCESS,
+      payload: response.data,
+    });
   } catch (error) {
-    yield put({ type: actionOrder.GET_ORDER_BY_ID_ERROR, error: JSON.stringify(error) });
+    yield put({
+      type: actionOrder.GET_ORDER_BY_ID_ERROR,
+      error: JSON.stringify(error),
+    });
   }
 }
 

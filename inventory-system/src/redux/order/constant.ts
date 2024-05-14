@@ -36,7 +36,9 @@ interface Order {
 }
 
 interface OrderItem {
+  key?: number;
   itemId?: number;
+  itemName?: string;
   sku?: string;
   price?: number;
   discount?: number;
@@ -47,6 +49,7 @@ interface OrderItem {
   content?: string;
   createdBy?: string;
   updatedBy?: string;
+  amount?: number;
 }
 
 interface ResponseOrder {
