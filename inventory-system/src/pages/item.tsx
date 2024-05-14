@@ -43,6 +43,7 @@ const Items: React.FC = () => {
     setItem(undefined);
     setVisible(true);
   };
+
   const handleSaveItem = (sup: ItemData) => {
     if (item) {
       console.log("call update dispatch =>>", sup);
@@ -54,11 +55,13 @@ const Items: React.FC = () => {
     setVisible(false);
     setTimeout(() => setLoading(true), 1000);
   };
+
   const onUpdate = (sup: ItemData) => {
     setItem(sup);
     setVisible(true);
     console.log(sup);
   };
+
   const columns: TableProps<ItemData>["columns"] = [
     {
       title: "id",
@@ -121,6 +124,7 @@ const Items: React.FC = () => {
       ),
     },
   ];
+
   return (
     <>
       <div className="tabled">

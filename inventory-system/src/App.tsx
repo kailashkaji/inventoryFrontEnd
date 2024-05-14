@@ -10,6 +10,7 @@ import Brand from "./pages/brand.tsx";
 import Category from "./pages/category.tsx";
 import Product from "./pages/product.tsx";
 import Items from "./pages/item.tsx";
+import Order from "./pages/order.tsx";
 function App() {
   return (
     <BrowserRouter>
@@ -30,6 +31,7 @@ function App() {
               <Route path="/category" element={<Category />} />
               <Route path="/product" element={<Product />} />
               <Route path="/item" element={<Items />} />
+              <Route path="/order" element={<Order />} />
             </Route>
           </Route>
         </Route>
