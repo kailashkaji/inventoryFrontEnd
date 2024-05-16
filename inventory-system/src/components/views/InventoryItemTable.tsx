@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Card, Typography } from "antd";
 
 interface InventoryItem {
   key: string;
@@ -12,46 +12,87 @@ interface InventorySummaryTableProps {
   data: InventoryItem[];
 }
 
-const InventorySummaryTable: React.FC<InventorySummaryTableProps> = ({ data }) => {
-  // Columns configuration
-  const columns = [
-    { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Quantity in Hand', dataIndex: 'quantityInHand', key: 'quantityInHand' },
-    { title: 'To Be Received', dataIndex: 'toBeReceived', key: 'toBeReceived' },
-    { title: 'Price ($)', dataIndex: 'price', key: 'price' },
-    { title: 'Total Value ($)', key: 'totalValue', render: (text: any, record: InventoryItem) => record.quantityInHand * record.price },
-  ];
+const InventorySummaryTable: React.FC<InventorySummaryTableProps> = ({
+  data,
+}) => {
+  const { Title } = Typography;
+  let totalQuantityInHand = 0;
+  let totalToBeReceived = 0;
+  let totalPrice = 0;
 
+  data.forEach(({ quantityInHand, toBeReceived, price }) => {
+    totalQuantityInHand += quantityInHand;
+    totalToBeReceived += toBeReceived;
+    totalPrice += quantityInHand * price;
+  });
   return (
-    <Table<InventoryItem>
-      dataSource={data}
-      columns={columns}
-      bordered
-      pagination={false} // Disables pagination
-      summary={pageData => {
-        let totalQuantityInHand = 0;
-        let totalToBeReceived = 0;
-        let totalPrice = 0;
-
-        pageData.forEach(({ quantityInHand, toBeReceived, price }) => {
-          totalQuantityInHand += quantityInHand;
-          totalToBeReceived += toBeReceived;
-          totalPrice += quantityInHand * price;
-        });
-
-        return (
-          <>
-            <Table.Summary.Row>
-              <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-              <Table.Summary.Cell index={1}>{totalQuantityInHand}</Table.Summary.Cell>
-              <Table.Summary.Cell index={2}>{totalToBeReceived}</Table.Summary.Cell>
-              <Table.Summary.Cell index={3}>{totalPrice.toFixed(2)}</Table.Summary.Cell>
-              <Table.Summary.Cell index={4}></Table.Summary.Cell> {/* Empty cell for Total Value column */}
-            </Table.Summary.Row>
-          </>
-        );
-      }}
-    />
+    <Card bordered={false} className="criclebox cardbody h-full">
+      <div className="project-ant">
+        <div>
+          <Title level={5}>INVENTORY SUMMARY</Title>
+          {/* <Paragraph className="lastweek">
+                    done this month<span className="blue">40%</span>
+                  </Paragraph> */}
+        </div>
+      </div>
+      <div className="ant-list-box table-responsive">
+        <table className="width-100">
+          <thead>
+            <tr>
+              <th>PRODUCT NAME </th>
+              <th>QUANTITY IN HAND</th>
+              <th>QUANTITY TO RECEIVE</th>
+              <th>PRICE</th>
+              <th>TOTAL VALUE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((d, index) => (
+              <tr key={index}>
+                <td>
+                  <h6>{d.name}</h6>
+                </td>
+                <td>{d.quantityInHand}</td>
+                <td>{d.toBeReceived}</td>
+                <td>
+                  <span className="text-xs font-weight-bold">
+                    {"$ "}
+                    {d.price}{" "}
+                  </span>
+                </td>
+                <td>
+                  <div className="percent-progress">
+                    {"$ "}
+                    {d.quantityInHand * d.price}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr key={21}>
+              <td>
+                <h6>Total </h6>
+              </td>
+              <td>{totalQuantityInHand}</td>
+              <td>{totalToBeReceived}</td>
+              <td>
+                <span className="text-xs font-weight-bold">
+                  {"$ "}
+                  {totalPrice}{" "}
+                </span>
+              </td>
+              <td>
+                <div className="percent-progress">
+                  {"$ "}
+                  {totalQuantityInHand * totalPrice}
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </Card>
   );
 };
 
