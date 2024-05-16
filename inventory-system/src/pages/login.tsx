@@ -114,22 +114,10 @@ const SignIn = () => {
   const [stop, setStop] = useState<boolean>(false);
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
-  const login = useSelector(
-    (state: RootState) => state.loginReducer.login,
+  const { login, isSuccess, user, accessToken, refreshToken } = useSelector(
+    (state: RootState) => state.loginReducer,
     shallowEqual
   );
-  const isSuccess = useSelector(
-    (state: RootState) => state.loginReducer.isSuccess,
-    shallowEqual
-  );
-  const accessToken = useSelector(
-    (state: RootState) => state.loginReducer.accessToken,
-    shallowEqual
-  );
-  // const refreshToken = useSelector(
-  //   (state: RootState) => state.loginReducer.refreshToken,
-  //   shallowEqual
-  // );
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyValue: Record<string, string> = {};
     keyValue.field = e.target.name;
@@ -143,13 +131,10 @@ const SignIn = () => {
         token: accessToken?.toString() || "",
         type: "Bearer",
       },
-      //refresh: refreshToken?.toString() || "",
-      userState: {
-        name: login.username,
-        uid: 123456,
-      },
+      refresh: refreshToken?.toString() || "",
+      userState: user,
     });
-  }, [accessToken, login.username, signIn]);
+  }, [accessToken, refreshToken, signIn, user]);
 
   useEffect(() => {
     if (isAuthenticated) {

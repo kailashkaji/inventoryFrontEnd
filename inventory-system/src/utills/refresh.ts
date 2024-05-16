@@ -3,7 +3,7 @@ import createRefresh from "react-auth-kit/createRefresh";
 import createStore from "react-auth-kit/createStore";
 
 export const refresh = createRefresh({
-  interval: 0.1,
+  interval: 1,
   refreshApiCallback: async (param) => {
     try {
       console.log("Refreshing start");
@@ -18,12 +18,11 @@ export const refresh = createRefresh({
         body,
         headerParms
       );
-      console.log("Refreshing");
+      console.log("Refreshing", response.data);
       return {
         isSuccess: true,
-        newAuthToken: response.data.token,
-        newAuthTokenExpireIn: 10,
-        newRefreshTokenExpiresIn: 60,
+        newAuthToken: response.data.accessToken,
+        newRefreshToken: response.data.refreshToken,
       };
     } catch (error) {
       console.error(error);
@@ -36,10 +35,10 @@ export const refresh = createRefresh({
 });
 
 export const authStore = createStore({
-  authName: "accessToken",
+  authName: "_auth",
   authType: "cookie",
   cookieDomain: window.location.hostname,
-  cookieSecure: false, //window.location.protocol === "https:",
-  //refresh: refresh,
-  //debug: true,
+  cookieSecure: window.location.protocol === "https:",
+  refresh: refresh,
+  debug: true,
 });

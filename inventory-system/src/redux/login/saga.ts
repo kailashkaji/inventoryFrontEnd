@@ -1,6 +1,6 @@
 import { put, takeEvery, call } from "redux-saga/effects";
 import { ActionLogin, actionTypesLogin } from "./constant";
-import { httpLogin } from "../../http/login";
+import { getUserProfile, httpLogin } from "../../http/login";
 
 function* userLogin(
   action: ActionLogin
@@ -14,10 +14,18 @@ function* userLogin(
       JSON.stringify(action.data),
       headerParms
     );
-    const result = response.data;
-    console.warn("action.data===>", response);
-    // dispatch a success action to the store with the new dog
-    yield put({ type: actionTypesLogin.USER_LOGIN_SUCCESS, result });
+    if (response.data) {
+      const result = response.data;
+      const headerParms1 = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + response.data.accessToken,
+      };
+      const response1 = yield call(getUserProfile, headerParms1);
+      console.warn("action.data===>", result);
+      const data = response1.data;
+      // dispatch a success action to the store with the new dog
+      yield put({ type: actionTypesLogin.USER_LOGIN_SUCCESS, result, data });
+    }
   } catch (error) {
     // dispatch a failure action to the store with the error
     yield put({

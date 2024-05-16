@@ -9,6 +9,8 @@ export const httpLogin = (
 export const ValidateAuth = (headers: AxiosRequestConfig["headers"]) =>
   axios.get(bgapiUrl + "/api/secret", { headers });
 
+export const getUserProfile = (headers: AxiosRequestConfig["headers"]) =>
+  axios.get(bgapiUrl + "/api/user/profile", { headers });
 export const httpRegister = (
   data: string,
   headers: AxiosRequestConfig["headers"]

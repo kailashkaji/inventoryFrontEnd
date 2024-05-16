@@ -1,10 +1,22 @@
 import { ActionLogin, actionTypesLogin } from "./constant";
+export interface User {
+  id: number;
+  username: string;
+  roles: Role[];
+}
+
+export interface Role {
+  id: number;
+  name: string;
+}
+
 export interface LoginState {
   fetching: boolean;
   login: {
     username: string | null;
     password: string | null;
   };
+  user: User;
   error: string | null;
   isSuccess: boolean;
   isError: boolean;
@@ -28,6 +40,7 @@ const initialState: LoginState = {
   authentication: false,
   messages: "",
   expires: false,
+  user: { id: 0, username: "", roles: [] },
 };
 
 const loginReducer = (state = initialState, action: ActionLogin) => {
@@ -71,9 +84,10 @@ const loginReducer = (state = initialState, action: ActionLogin) => {
         fetching: false,
         authentication: true,
         accessToken: action.result?.accessToken,
-        refreshToken: action.result?.token,
+        refreshToken: action.result?.refreshToken,
         messages: "login Success!!",
         isSuccess: true,
+        user: action.data,
       };
 
     case actionTypesLogin.USER_CLEAR:

@@ -22,6 +22,8 @@ import { useEffect, useState } from "react";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 import { useDispatch } from "react-redux";
 import { UserClear } from "../../redux/login/action";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import { User } from "../../redux/login/reducer";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -267,7 +269,7 @@ function Header({
   };
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
-
+  const auth: User | null = useAuthUser();
   return (
     <>
       <div className="setting-drwer" onClick={showDrawer}>
@@ -424,14 +426,16 @@ function Header({
             to="/sign-in"
             className="btn-sign-in"
           >
-            {profile}
-            <span>Sign Out</span>
+            <span>SIGNOUT</span>
           </Link>
           <Input
             className="header-search"
             placeholder="Type here..."
             prefix={<SearchOutlined />}
           />
+
+          <span>{auth?.username}</span>
+          {profile}
         </Col>
       </Row>
     </>

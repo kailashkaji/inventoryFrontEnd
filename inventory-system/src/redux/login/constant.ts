@@ -17,14 +17,15 @@ type ActionTypesLogin =
 export type { ActionTypesLogin };
 
 export interface ActionPayload {
+  accessToken?: string;
   field: string;
   value: string | undefined;
 }
 
-interface LoginSuccessPayload {
+export interface LoginSuccessPayload {
   accessToken: string;
   expires_in: number;
-  token: string;
+  refreshToken: string;
   token_type: string;
 }
 

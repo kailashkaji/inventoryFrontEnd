@@ -7,7 +7,7 @@ import store from "./redux/store.ts";
 import "antd/dist/reset.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
-import AuthProvider from "react-auth-kit";
+import AuthProvider from "react-auth-kit/AuthProvider";
 import { authStore } from "./utills/refresh.ts";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
