@@ -151,14 +151,14 @@ function App() {
         <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={12} lg={12} xl={16} className="mb-24">
             <InventorySummaryTable data={inventoryData} />
-            <Card bordered={false} className="criclebox cardbody h-full">
+            {/* <Card bordered={false} className="criclebox cardbody h-full">
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ width: "50%", marginRight: "5px" }}>
                   <h2>Sales Overview</h2>
                   <SalesOverviewTable data={salesData} />
                 </div>
               </div>
-            </Card>
+            </Card> */}
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={8} className="mb-24">
             <Card bordered={false} className="criclebox h-full">
