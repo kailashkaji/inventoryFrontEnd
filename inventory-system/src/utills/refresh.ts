@@ -2,7 +2,7 @@ import axios from "axios";
 import createRefresh from "react-auth-kit/createRefresh";
 import createStore from "react-auth-kit/createStore";
 
-export const refresh = createRefresh({
+const refresh = createRefresh({
   interval: 1,
   refreshApiCallback: async (param) => {
     try {
@@ -23,6 +23,9 @@ export const refresh = createRefresh({
         isSuccess: true,
         newAuthToken: response.data.accessToken,
         newRefreshToken: response.data.refreshToken,
+        newAuthTokenType: "Bearer",
+        newAuthTokenExpireIn: 1,
+        newRefreshTokenExpiresIn: 1 * 10,
       };
     } catch (error) {
       console.error(error);
@@ -38,7 +41,7 @@ export const authStore = createStore({
   authName: "_auth",
   authType: "cookie",
   cookieDomain: window.location.hostname,
-  cookieSecure: window.location.protocol === "https:",
+  cookieSecure: false, //window.location.protocol === "https:",
   refresh: refresh,
-  debug: true,
+  // debug: true,
 });

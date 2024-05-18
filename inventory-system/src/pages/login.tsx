@@ -21,7 +21,7 @@ import { RootState } from "../redux/store";
 
 const { Title } = Typography;
 const { Header, Footer, Content } = Layout;
-const template = [
+const template = (
   <svg
     data-v-4ebdc598=""
     width="20"
@@ -48,9 +48,9 @@ const template = [
       fill="#111827"
       className="fill-muted"
     ></path>
-  </svg>,
-];
-const profile = [
+  </svg>
+);
+const profile = (
   <svg
     data-v-4ebdc598=""
     width="20"
@@ -67,9 +67,9 @@ const profile = [
       fill="#111827"
       className="fill-muted"
     ></path>
-  </svg>,
-];
-const signup = [
+  </svg>
+);
+const signup = (
   <svg
     data-v-4ebdc598=""
     width="20"
@@ -86,9 +86,9 @@ const signup = [
       fill="#111827"
       className="fill-muted"
     ></path>
-  </svg>,
-];
-const signin = [
+  </svg>
+);
+const signin = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="14"
@@ -99,8 +99,8 @@ const signin = [
       className="fill-muted"
       d="M12.25,14H1.75A1.752,1.752,0,0,1,0,12.25V3.5A1.752,1.752,0,0,1,1.75,1.75h.876V.875a.875.875,0,0,1,1.75,0V1.75h5.25V.875a.875.875,0,0,1,1.75,0V1.75h.875A1.752,1.752,0,0,1,14,3.5v8.75A1.752,1.752,0,0,1,12.25,14ZM3.5,4.375a.875.875,0,0,0,0,1.75h7a.875.875,0,0,0,0-1.75Z"
     />
-  </svg>,
-];
+  </svg>
+);
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -110,7 +110,6 @@ const SignIn = () => {
     locationState.state == null
       ? { from: { pathname: "/" } }
       : locationState.state;
-  // const [redirectToReferrer, setRedirectToReferrer] = useState<boolean>(false);
   const [stop, setStop] = useState<boolean>(false);
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
@@ -139,7 +138,6 @@ const SignIn = () => {
   useEffect(() => {
     if (isAuthenticated) {
       navigate(from.pathname);
-      //      dispatch(ValidateAuth());
     }
     if (!!isSuccess && !stop) {
       setStop(true);
@@ -222,24 +220,24 @@ const SignIn = () => {
               >
                 <Form.Item
                   className="username"
-                  label="Email"
-                  name="email"
+                  label="Username"
+                  name="username"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your email!",
+                      message: "Please input your username!",
                     },
                   ]}
                 >
                   <Input
-                    placeholder="Email"
+                    placeholder="Username"
                     name="username"
                     onChange={onChange}
                   />
                 </Form.Item>
 
                 <Form.Item
-                  className="username"
+                  className="password"
                   label="Password"
                   name="password"
                   rules={[
@@ -249,22 +247,12 @@ const SignIn = () => {
                     },
                   ]}
                 >
-                  <Input
+                  <Input.Password
                     placeholder="Password"
                     name="password"
-                    type="password"
                     onChange={onChange}
                   />
                 </Form.Item>
-
-                {/* <Form.Item
-                  name="remember"
-                  className="aligin-center"
-                  valuePropName="checked"
-                >
-                  <Switch defaultChecked onChange={() => onChange} />
-                  Remember me
-                </Form.Item> */}
 
                 <Form.Item>
                   <Button
@@ -338,4 +326,5 @@ const SignIn = () => {
     </>
   );
 };
+
 export default SignIn;
