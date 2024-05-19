@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Space, TableProps, Card, Row, Col, Modal, Tag, Badge } from "antd";
+import { Table, Button, Space, TableProps, Card, Row, Col, Modal, Tag, Badge, BadgeProps } from "antd";
 import { PlusOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import OrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,7 @@ import { RootState } from "../redux/store";
 import { getAllOrders, createOrder, getOrderById } from "../redux/order/action";
 import { getSuppliers } from "../redux/supplier/action";
 import { Order } from "../redux/order/constant";
+import { useLocation } from "react-router-dom";
 
 const Orders: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,13 +16,22 @@ const Orders: React.FC = () => {
     shallowEqual
   );
 
-  useEffect(() => {
-    dispatch(getSuppliers());
-    dispatch(getAllOrders());
-  }, [dispatch]);
-
+  const { state } = useLocation();
   const [order, setOrder] = useState<Order | undefined>(undefined);
   const [visible, setVisible] = useState(false);
+  const { fromSpecificPage } = state || {};
+  
+  useEffect(() => {
+    
+    console.log("isComingFromItemPage ==>", fromSpecificPage);
+    if (fromSpecificPage) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
+    dispatch(getSuppliers());
+    dispatch(getAllOrders());
+  }, [dispatch, location]);
 
   const onCreate = () => {
     const newData: Order = {};
@@ -50,7 +60,7 @@ const Orders: React.FC = () => {
           {/* Add more order details as needed */}
         </div>
       ),
-      onOk() {},
+      onOk() { },
     });
   };
 
@@ -61,7 +71,7 @@ const Orders: React.FC = () => {
 
   const getTypeBadge = (type: number) => {
     let text = '';
-    let status: BadgeProps['status'] = 'default'; 
+    let status: BadgeProps['status'] = 'default';
     switch (type) {
       case 0:
         text = 'Purchase';

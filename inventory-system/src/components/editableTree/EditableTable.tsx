@@ -286,7 +286,7 @@ const EditAbleTable: React.FC<OrderItemProps> = ({
         type="primary"
         style={{ marginBottom: 16 }}
       >
-        Add a row
+        Add an item to Order
       </Button>
       <Table
         components={components}
