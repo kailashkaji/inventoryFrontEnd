@@ -30,3 +30,9 @@ export const getItems = () => {
     type: actionItem.LOAD_ALL_ITEM,
   };
 };
+export const getActiveItems = () => {
+  console.warn("get active items all");
+  return {
+    type: actionItem.LOAD_ALL_ACTIVE_ITEM,
+  };
+};

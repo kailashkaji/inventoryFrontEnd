@@ -1,75 +1,110 @@
-import SalesOverviewTable from "../components/views/SalesOverviewTable";
+// import SalesOverviewTable from "../components/views/SalesOverviewTable";
 import InventorySummaryTable from "../components/views/InventoryItemTable";
 import {
   MenuUnfoldOutlined,
   DollarTwoTone,
-  UserOutlined,
-  HeartFilled,
   ShoppingFilled,
+  ProductFilled,
+  StopFilled,
 } from "@ant-design/icons";
 import { Row, Col, Card, Button, Timeline, Typography } from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
 
 import Echart from "./../components/chart/EChart";
 import LineChart from "./../components/chart/LineChart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { getActiveItems } from "../redux/item/action";
 
 function App() {
   const { Title, Text } = Typography;
-
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const { items } = useSelector(
+    (state: RootState) => state.itemReducer,
+    shallowEqual
+  );
   const [reverse, setReverse] = useState(false);
+
+  useEffect(() => {
+    if (loading) {
+      dispatch(getActiveItems());
+      setLoading(false);
+    }
+  }, [dispatch, loading]);
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
   // Sample sales data
-  const salesData = [
-    { key: "1", date: "2024-05-01", revenue: 1000, orders: 20 },
-    { key: "2", date: "2024-05-02", revenue: 1500, orders: 25 },
-    { key: "3", date: "2024-05-03", revenue: 1200, orders: 22 },
-  ];
+  // const salesData = [
+  //   { key: "1", date: "2024-05-01", revenue: 1000, orders: 20 },
+  //   { key: "2", date: "2024-05-02", revenue: 1500, orders: 25 },
+  //   { key: "3", date: "2024-05-03", revenue: 1200, orders: 22 },
+  // ];
 
   // Sample inventory data
-  const inventoryData = [
-    {
-      key: "1",
-      name: "iPhone",
-      quantityInHand: 10,
-      toBeReceived: 5,
-      price: 15,
-    },
-    {
-      key: "2",
-      name: "Samsung Galaxy",
-      quantityInHand: 15,
-      toBeReceived: 3,
-      price: 20,
-    },
-    // Add more inventory items as needed
-  ];
+  // const inventoryData = [
+  //   {
+  //     key: "1",
+  //     name: "iPhone",
+  //     quantityInHand: 10,
+  //     toBeReceived: 5,
+  //     price: 15,
+  //   },
+  //   {
+  //     key: "2",
+  //     name: "Samsung Galaxy",
+  //     quantityInHand: 15,
+  //     toBeReceived: 3,
+  //     price: 20,
+  //   },
+  //   // Add more inventory items as needed
+  // ];
+  const totalNumProduct = items ? items.length : 0;
+  const lowStockProduct =
+    items.filter(
+      (x) =>
+        x.itemLots != null &&
+        x.minRecomStock >
+          x.itemLots?.reduce((total, itemLot) => total + itemLot.available, 0)
+    )?.length || 0;
+
+  const outofStockProduct =
+    items.filter(
+      (x) =>
+        x.itemLots == null ||
+        x.itemLots?.reduce((total, itemLot) => total + itemLot.available, 0) ==
+          0
+    )?.length || 0;
   const count = [
     {
-      today: "Today’s Sales",
-      title: "$53,000",
-      persent: "+30%",
-      icon: <DollarTwoTone />,
+      today: "Total Products",
+      title: totalNumProduct,
+
+      icon: <ShoppingFilled />,
       bnb: "bnb2",
     },
     {
-      today: "Today’s Users",
-      title: "3,200",
-      persent: "+20%",
-      icon: <UserOutlined />,
+      today: "Low Stock Product",
+      title: lowStockProduct,
+      persent: (lowStockProduct / totalNumProduct) * 100 + "%",
+      icon: <ProductFilled />,
       bnb: "bnb2",
     },
     {
-      today: "New Clients",
-      title: "+1,200",
-      persent: "-20%",
-      icon: <HeartFilled />,
+      today: "Out of Stock Product",
+      title: outofStockProduct,
+      persent: (outofStockProduct / totalNumProduct) * 100 + "%",
+      icon: <StopFilled />,
       bnb: "redtext",
     },
     {
-      today: "New Orders",
+      today: "Today's Sales",
       title: "$13,200",
       persent: "10%",
-      icon: <ShoppingFilled />,
+      icon: <DollarTwoTone />,
       bnb: "bnb2",
     },
   ];
@@ -150,7 +185,7 @@ function App() {
 
         <Row gutter={[24, 0]}>
           <Col xs={24} sm={24} md={12} lg={12} xl={16} className="mb-24">
-            <InventorySummaryTable data={inventoryData} />
+            <InventorySummaryTable data={items} />
             {/* <Card bordered={false} className="criclebox cardbody h-full">
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ width: "50%", marginRight: "5px" }}>

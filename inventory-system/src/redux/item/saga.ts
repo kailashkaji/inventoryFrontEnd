@@ -1,6 +1,12 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { ActionItem, ItemData, actionItem } from "./constant";
-import { createItem, getAllItem, getItemById, editItem } from "../../http/item";
+import {
+  createItem,
+  getAllItem,
+  getItemById,
+  editItem,
+  getAllActiveItem,
+} from "../../http/item";
 import { AxiosResponse } from "axios";
 
 function* addItem(action: {
@@ -70,6 +76,23 @@ function* fetchAllItem(): Generator<unknown, void, AxiosResponse> {
     });
   }
 }
+function* fetchAllActiveItem(): Generator<unknown, void, AxiosResponse> {
+  try {
+    const headerParms = {
+      "Content-Type": "application/json",
+    };
+    const response = yield call(getAllActiveItem, headerParms);
+    const result = response.data;
+    console.warn("item updated ===>", response.data);
+    yield put({ type: actionItem.LOAD_ALL_ACTIVE_ITEM_SUCCESS, result });
+  } catch (error) {
+    console.warn("get all active item error", error);
+    yield put({
+      type: actionItem.LOAD_ALL_ACTIVE_ITEM_ERROR,
+      error: JSON.stringify(error),
+    });
+  }
+}
 function* fetchItemById(action: {
   type: ActionItem;
   payload: ItemData;
@@ -94,6 +117,7 @@ function* itemSaga() {
   yield takeLatest(actionItem.UPDATE_ITEM, updateItem);
   yield takeLatest(actionItem.LOAD_ALL_ITEM, fetchAllItem);
   yield takeLatest(actionItem.LOAD_ITEM_REQUEST, fetchItemById);
+  yield takeLatest(actionItem.LOAD_ALL_ACTIVE_ITEM, fetchAllActiveItem);
 }
 
 export default itemSaga;

@@ -11,9 +11,24 @@ export const actionItem = {
   LOAD_ALL_ITEM: "LOAD_ALL_ITEM" as const,
   LOAD_ALL_ITEM_SUCCESS: "LOAD_ALL_ITEM_SUCCESS" as const,
   LOAD_ALL_ITEM_ERROR: "LOAD_ALL_ITEM_ERROR" as const,
+  LOAD_ALL_ACTIVE_ITEM: "LOAD_ALL_ACTIVE_ITEM" as const,
+  LOAD_ALL_ACTIVE_ITEM_SUCCESS: "LOAD_ALL_ACTIVE_ITEM_SUCCESS" as const,
+  LOAD_ALL_ACTIVE_ITEM_ERROR: "LOAD_ALL_ACTIVE_ITEM_ERROR" as const,
 };
 
 type ActionItem = (typeof actionItem)[keyof typeof actionItem];
+
+interface ItemLot {
+  id: number;
+  quantity: number;
+  sold: number;
+  returnableItem: boolean;
+  available: number;
+  defective: number;
+  defectiveCustReturned: number;
+  expireDate: number;
+  item: ItemData;
+}
 
 interface ItemData {
   id: number;
@@ -31,6 +46,7 @@ interface ItemData {
   ean?: number;
   isActive: boolean;
   minRecomStock: number;
+  itemLots: ItemLot[];
 }
 
 interface ResponseItem {

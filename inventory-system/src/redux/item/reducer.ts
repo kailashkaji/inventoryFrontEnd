@@ -104,6 +104,33 @@ const itemReducer = (state = initialState, action: ResponseItem): ItemState => {
         isError: true,
         items: Object.assign({}, state.items, action.result),
       };
+    case actionItem.LOAD_ALL_ACTIVE_ITEM:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actionItem.LOAD_ALL_ACTIVE_ITEM_SUCCESS: {
+      console.warn("get all active item ==>", action);
+
+      return {
+        ...state,
+        items: action.result,
+        loading: false,
+        error: null,
+        isSuccess: true,
+        isError: false,
+      };
+    }
+    case actionItem.LOAD_ALL_ACTIVE_ITEM_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+        isSuccess: false,
+        isError: true,
+        items: Object.assign({}, state.items, action.result),
+      };
     case actionItem.LOAD_ITEM_REQUEST:
       return {
         ...state,

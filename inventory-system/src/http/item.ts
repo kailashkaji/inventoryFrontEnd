@@ -8,6 +8,9 @@ export const createItem = (
 export const getAllItem = (headers: AxiosRequestConfig["headers"]) =>
   axios.get(bgapiUrl + "/api/item", { headers });
 
+export const getAllActiveItem = (headers: AxiosRequestConfig["headers"]) =>
+  axios.get(bgapiUrl + "/api/item/allActiveItems", { headers });
+
 export const getItemById = (
   id: number,
   headers: AxiosRequestConfig["headers"]

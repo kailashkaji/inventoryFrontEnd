@@ -1,15 +1,16 @@
 import { Card, Typography } from "antd";
+import { ItemData } from "../../redux/item/constant";
 
 interface InventoryItem {
-  key: string;
+  key: number;
   name: string;
   quantityInHand: number;
-  toBeReceived: number;
+  minimumStock: number;
   price: number;
 }
 
 interface InventorySummaryTableProps {
-  data: InventoryItem[];
+  data: ItemData[];
 }
 
 const InventorySummaryTable: React.FC<InventorySummaryTableProps> = ({
@@ -17,13 +18,22 @@ const InventorySummaryTable: React.FC<InventorySummaryTableProps> = ({
 }) => {
   const { Title } = Typography;
   let totalQuantityInHand = 0;
-  let totalToBeReceived = 0;
+  let totalminimumStock = 0;
   let totalPrice = 0;
 
-  data.forEach(({ quantityInHand, toBeReceived, price }) => {
+  const dataInTable: InventoryItem[] = data.map((x) => ({
+    key: x.id,
+    name: x.itemName,
+    quantityInHand:
+      x.itemLots?.reduce((total, itemLot) => total + itemLot.available, 0) || 0,
+    minimumStock: x.minRecomStock,
+    price: x.mrp || 0,
+  }));
+
+  dataInTable.forEach(({ quantityInHand, minimumStock, price }) => {
     totalQuantityInHand += quantityInHand;
-    totalToBeReceived += toBeReceived;
-    totalPrice += quantityInHand * price;
+    totalminimumStock += minimumStock;
+    totalPrice += price;
   });
   return (
     <Card bordered={false} className="criclebox cardbody h-full">
@@ -40,20 +50,20 @@ const InventorySummaryTable: React.FC<InventorySummaryTableProps> = ({
           <thead>
             <tr>
               <th>PRODUCT NAME </th>
-              <th>QUANTITY IN HAND</th>
-              <th>QUANTITY TO RECEIVE</th>
+              <th>QUANTITY IN STOCK</th>
+              <th>MINIMUM STOCK</th>
               <th>PRICE</th>
               <th>TOTAL VALUE</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((d, index) => (
+            {dataInTable.map((d, index) => (
               <tr key={index}>
                 <td>
                   <h6>{d.name}</h6>
                 </td>
                 <td>{d.quantityInHand}</td>
-                <td>{d.toBeReceived}</td>
+                <td>{d.minimumStock}</td>
                 <td>
                   <span className="text-xs font-weight-bold">
                     {"$ "}
@@ -63,7 +73,7 @@ const InventorySummaryTable: React.FC<InventorySummaryTableProps> = ({
                 <td>
                   <div className="percent-progress">
                     {"$ "}
-                    {d.quantityInHand * d.price}
+                    {d.price * d.quantityInHand}
                   </div>
                 </td>
               </tr>
@@ -75,7 +85,7 @@ const InventorySummaryTable: React.FC<InventorySummaryTableProps> = ({
                 <h6>Total </h6>
               </td>
               <td>{totalQuantityInHand}</td>
-              <td>{totalToBeReceived}</td>
+              <td>{totalminimumStock}</td>
               <td>
                 <span className="text-xs font-weight-bold">
                   {"$ "}
