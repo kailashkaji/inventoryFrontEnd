@@ -1,4 +1,4 @@
-import SalesOverviewTable from "../components/views/SalesOverviewTable";
+// import SalesOverviewTable from "../components/views/SalesOverviewTable";
 import InventorySummaryTable from "../components/views/InventoryItemTable";
 import {
   MenuUnfoldOutlined,
@@ -19,11 +19,11 @@ function App() {
 
   const [reverse, setReverse] = useState(false);
   // Sample sales data
-  const salesData = [
-    { key: "1", date: "2024-05-01", revenue: 1000, orders: 20 },
-    { key: "2", date: "2024-05-02", revenue: 1500, orders: 25 },
-    { key: "3", date: "2024-05-03", revenue: 1200, orders: 22 },
-  ];
+  // const salesData = [
+  //   { key: "1", date: "2024-05-01", revenue: 1000, orders: 20 },
+  //   { key: "2", date: "2024-05-02", revenue: 1500, orders: 25 },
+  //   { key: "3", date: "2024-05-03", revenue: 1200, orders: 22 },
+  // ];
 
   // Sample inventory data
   const inventoryData = [

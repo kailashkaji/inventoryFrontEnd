@@ -1,4 +1,3 @@
-import React from "react";
 import { Menu, Button } from "antd";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { NavLink, useLocation } from "react-router-dom";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Space, TableProps, Card, Row, Col, Modal, Tag, Badge } from "antd";
+import { Table, Button, Space, TableProps, Card, Row, Col, Modal, Tag, Badge, BadgeProps } from "antd";
 import { PlusOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import OrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
