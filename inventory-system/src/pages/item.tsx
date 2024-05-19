@@ -12,8 +12,10 @@ import { getProducts } from "../redux/product/action";
 import { getBrands } from "../redux/brand/action";
 import { BrandData } from "../redux/brand/constant";
 import { User } from "../redux/login/reducer";
+import { useNavigate } from "react-router-dom";
 
 const Items: React.FC = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const [item, setItem] = React.useState<ItemData>();
@@ -29,6 +31,9 @@ const Items: React.FC = () => {
     shallowEqual
   );
 
+  const handleNavigateToOrderClick = () => {
+    navigate("/order", { state: { fromSpecificPage: true } });
+  };
   const brandList: BrandData[] = useSelector(
     (state: RootState) => state.brandReducer.brands,
     shallowEqual
@@ -133,7 +138,7 @@ const Items: React.FC = () => {
     return (
       <>
         <div className="item-cards">
-          {}
+          { }
           {itemList.map((item) => (
             <Card
               key={item.id}
@@ -141,7 +146,7 @@ const Items: React.FC = () => {
               className="item-card"
               style={{ marginBottom: '20px' }}
             >
-              {}
+              { }
               <p>Brand: {brandList.find((brand) => brand.id === item.brandId)?.name}</p>
               <p>Product: {productList.find((product) => product.id === item.productId)?.title}</p>
               <p>SKU: {item.sku}</p>
@@ -149,14 +154,17 @@ const Items: React.FC = () => {
               <p>Unit: {item.unit}</p>
               <p>Dimension: {item.dimension}</p>
               <p>Min Recommended Stock: {item.minRecomStock}</p>
-              {}
+
+              <div>
+                <Button type="primary" onClick={handleNavigateToOrderClick} style={{ marginTop: '10px' }}>Order Now</Button>
+              </div>
             </Card>
           ))}
         </div>
       </>
     );
   };
-  
+
 
   const renderAdminView = () => {
     return (

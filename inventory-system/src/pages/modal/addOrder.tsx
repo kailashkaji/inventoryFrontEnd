@@ -6,8 +6,8 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { SupplierData } from "../../redux/supplier/constant";
 import { RootState } from "../../redux/store";
 import { getItems } from "../../redux/item/action";
-//import { useState } from "react";
-
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import { User } from "../../redux/login/reducer";
 interface OrderFormProps {
   visible: boolean;
   onCancel: () => void;
@@ -29,6 +29,8 @@ const OrderForm: React.FC<OrderFormProps> = ({
     initialData?.orderItem || []
   );
   const disabled = initialData?.id != undefined;
+  const auth: User | null = useAuthUser();
+  const isAdmin: boolean = auth?.roles.some(role => role.name.includes("Admin"));
 
   const vendorList: SupplierData[] = useSelector(
     (state: RootState) => state.supplierReducer.suppliers,
@@ -127,15 +129,18 @@ const OrderForm: React.FC<OrderFormProps> = ({
                 { required: true, message: "Please select the Vendor Name!" },
               ]}
             >
-              <Select
-                showSearch
-                filterOption={filterOption}
-                options={vendorList.map((item) => ({
-                  value: item.id,
-                  label: item?.companyName ?? "",
-                }))}
-                disabled={disabled}
-              />
+              {isAdmin ? (
+                <Select
+                  showSearch
+                  filterOption={filterOption}
+                  options={vendorList.map((item) => ({
+                    value: item.id,
+                    label: item?.companyName ?? "",
+                  }))}
+                />
+              ) : (
+                <Input placeholder={auth?.id} disabled={true} />
+              )}
             </Form.Item>
             <Form.Item
               name="Delivery Address"
