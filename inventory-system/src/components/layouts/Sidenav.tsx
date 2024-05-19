@@ -185,6 +185,10 @@ function Sidenav({ color }: { color: string }) {
                 <span className="label">Product</span>
               </NavLink>
             </Menu.Item>
+          </>
+        )}
+         {(hasRole("Customer") || hasRole("Admin")) && (
+          <>
             <Menu.Item key="6">
               <NavLink to="/item">
                 <span
@@ -198,22 +202,20 @@ function Sidenav({ color }: { color: string }) {
                 <span className="label">Item</span>
               </NavLink>
             </Menu.Item>
+            <Menu.Item key="7">
+              <NavLink to="/order">
+                <span
+                  className="icon"
+                  style={{
+                    background: page === "order" ? color : "",
+                  }}
+                >
+                   <AppstoreFilled />
+                </span>
+                <span className="label">Orders</span>
+              </NavLink>
+            </Menu.Item>
           </>
-        )}
-        {(hasRole("Customer") || hasRole("Admin")) && (
-          <Menu.Item key="7">
-            <NavLink to="/order">
-              <span
-                className="icon"
-                style={{
-                  background: page === "order" ? color : "",
-                }}
-              >
-                <AppstoreFilled />
-              </span>
-              <span className="label">Orders</span>
-            </NavLink>
-          </Menu.Item>
         )}
         <Menu.Item className="menu-item-header" key="9">
           User Information
