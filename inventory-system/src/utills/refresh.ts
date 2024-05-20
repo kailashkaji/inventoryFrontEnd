@@ -3,7 +3,7 @@ import createRefresh from "react-auth-kit/createRefresh";
 import createStore from "react-auth-kit/createStore";
 
 const refresh = createRefresh({
-  interval: 1,
+  interval: 0.9,
   refreshApiCallback: async (param) => {
     try {
       console.log("Refreshing start");
@@ -25,7 +25,7 @@ const refresh = createRefresh({
         newRefreshToken: response.data.refreshToken,
         newAuthTokenType: "Bearer",
         newAuthTokenExpireIn: 1,
-        newRefreshTokenExpiresIn: 1 * 10,
+        newRefreshTokenExpiresIn: 10,
       };
     } catch (error) {
       console.error(error);
