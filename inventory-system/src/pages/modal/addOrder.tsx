@@ -139,7 +139,13 @@ const OrderForm: React.FC<OrderFormProps> = ({
                   }))}
                 />
               ) : (
-                <Input placeholder={auth?.id} disabled={true} />
+               <Select
+               showSearch
+               filterOption={filterOption}
+               options={[
+                 { value: auth?.id ?? 0, label: auth?.username ?? "" }
+               ]}
+             />
               )}
             </Form.Item>
             <Form.Item
