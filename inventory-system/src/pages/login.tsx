@@ -319,7 +319,7 @@ const SignIn = () => {
           </Menu>
           <p className="copyright">
             {" "}
-            Copyright © 2021 CQU by <a href="#pablo">Team F</a>.{" "}
+            Copyright © 2024 CQU by <a href="#pablo">Team 7</a>.{" "}
           </p>
         </Footer>
       </Layout>
