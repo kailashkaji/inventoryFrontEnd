@@ -155,12 +155,19 @@ const EditAbleTable: React.FC<OrderItemProps> = ({
   disabled,
 }) => {
   const [dataSource, setDataSource] = useState<OrderItem[]>(initialData || []);
-  dataSource.map((orderItem) => {
-    return {
-      ...orderItem,
-      key: orderItem.itemId,
-    };
-  });
+  useEffect(() => {
+    if (initialData) {
+      setDataSource(
+        initialData.map((orderItem) => {
+          return {
+            ...orderItem,
+            key: orderItem.itemId,
+          };
+        })
+      );
+    }
+  }, [initialData]);
+
   const [count, setCount] = useState(500);
   const handleDelete = (key: number) => {
     const newData = dataSource.filter((item) => item.key !== key);

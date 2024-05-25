@@ -8,6 +8,7 @@ import categoryReducer from "./category/reducer";
 import productReducer from "./product/reducer";
 import itemReducer from "./item/reducer";
 import orderReducer from "./order/reducer";
+import orderReceiveReducer from "./PurchaseReceive/reducer";
 
 export default combineReducers({
   helloworld: helloworld,
@@ -19,4 +20,5 @@ export default combineReducers({
   productReducer: productReducer,
   itemReducer: itemReducer,
   orderReducer: orderReducer,
+  orderReceiveReducer: orderReceiveReducer,
 });

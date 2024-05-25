@@ -7,6 +7,12 @@ export const createOrder = (data: Order) => {
     payload: data,
   };
 };
+export const updateOrder = (data: Order) => {
+  return {
+    type: actionOrder.UPDATE_ORDER,
+    payload: data,
+  };
+};
 
 export const getOrderById = (id: number) => {
   console.warn("order get by id", id);

@@ -88,6 +88,34 @@ const orderReducer = (
         isError: true,
         orders: [],
       };
+    case actionOrder.UPDATE_ORDER:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actionOrder.UPDATE_ORDER_SUCCESS: {
+      const item: Order[] = Object.assign({}, state.orders, action.result);
+      console.warn("add item ==>", item);
+
+      return {
+        ...state,
+        orders: item,
+        loading: false,
+        error: null,
+        isSuccess: true,
+        isError: false,
+      };
+    }
+    case actionOrder.UPDATE_ORDER_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+        isSuccess: false,
+        isError: true,
+        orders: Object.assign({}, state.orders, action.result),
+      };
     default:
       return state;
   }

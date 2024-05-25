@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Space, TableProps, Card, Row, Col, Modal, Tag, Badge, BadgeProps } from "antd";
+import {
+  Table,
+  Button,
+  Space,
+  TableProps,
+  Card,
+  Row,
+  Col,
+  Modal,
+  Tag,
+  Badge,
+  BadgeProps,
+} from "antd";
 import { PlusOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import OrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -20,9 +32,8 @@ const Orders: React.FC = () => {
   const [order, setOrder] = useState<Order | undefined>(undefined);
   const [visible, setVisible] = useState(false);
   const { fromSpecificPage } = state || {};
-  
+
   useEffect(() => {
-    
     console.log("isComingFromItemPage ==>", fromSpecificPage);
     if (fromSpecificPage) {
       setVisible(true);
@@ -31,7 +42,7 @@ const Orders: React.FC = () => {
     }
     dispatch(getSuppliers());
     dispatch(getAllOrders());
-  }, [dispatch, location]);
+  }, [dispatch, fromSpecificPage]);
 
   const onCreate = () => {
     const newData: Order = {};
@@ -60,7 +71,7 @@ const Orders: React.FC = () => {
           {/* Add more order details as needed */}
         </div>
       ),
-      onOk() { },
+      onOk() {},
     });
   };
 
@@ -70,44 +81,44 @@ const Orders: React.FC = () => {
   };
 
   const getTypeBadge = (type: number) => {
-    let text = '';
-    let status: BadgeProps['status'] = 'default';
+    let text = "";
+    let status: BadgeProps["status"] = "default";
     switch (type) {
       case 0:
-        text = 'Purchase';
-        status = 'processing';
+        text = "Purchase";
+        status = "processing";
         break;
       case 1:
-        text = 'Sale';
-        status = 'success';
+        text = "Sale";
+        status = "success";
         break;
       default:
-        text = 'Unknown';
-        status = 'default';
+        text = "Unknown";
+        status = "default";
     }
     return <Badge status={status} text={text} />;
   };
 
   const getStatusTag = (status: number) => {
-    console.log('Status received:', status, typeof status);
-    let color = '';
-    let text = '';
+    console.log("Status received:", status, typeof status);
+    let color = "";
+    let text = "";
     switch (status) {
       case 0:
-        color = 'orange';
-        text = 'Pending';
+        color = "orange";
+        text = "Pending";
         break;
       case 1:
-        color = 'green';
-        text = 'Completed';
+        color = "green";
+        text = "Completed";
         break;
       case 2:
-        color = 'red';
-        text = 'Cancelled';
+        color = "red";
+        text = "Cancelled";
         break;
       default:
-        color = 'blue';
-        text = 'Unknown';
+        color = "blue";
+        text = "Unknown";
     }
     return <Tag color={color}>{text}</Tag>;
   };
