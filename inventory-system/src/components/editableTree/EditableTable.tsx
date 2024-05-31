@@ -155,12 +155,7 @@ const EditAbleTable: React.FC<OrderItemProps> = ({
   disabled,
 }) => {
   const [dataSource, setDataSource] = useState<OrderItem[]>(initialData || []);
-  dataSource.map((orderItem) => {
-    return {
-      ...orderItem,
-      key: orderItem.itemId,
-    };
-  });
+
   const [count, setCount] = useState(500);
   const handleDelete = (key: number) => {
     const newData = dataSource.filter((item) => item.key !== key);
@@ -171,7 +166,22 @@ const EditAbleTable: React.FC<OrderItemProps> = ({
     (state: RootState) => state.itemReducer,
     shallowEqual
   );
-
+  useEffect(() => {
+    if (initialData) {
+      setDataSource(
+        initialData.map((orderItem) => {
+          const correspondingItem = items.find(
+            (item) => item.id === orderItem.itemId
+          );
+          return {
+            ...orderItem,
+            key: orderItem.itemId,
+            itemName: correspondingItem?.itemName,
+          };
+        })
+      );
+    }
+  }, [initialData, items]);
   const defaultColumns: (ColumnTypes[number] & {
     editable?: boolean;
     dataIndex: string;
@@ -237,7 +247,6 @@ const EditAbleTable: React.FC<OrderItemProps> = ({
   };
 
   const handleSave = (row: OrderItem) => {
-    console.log("yaha ta aauxa jasto laga kere");
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];

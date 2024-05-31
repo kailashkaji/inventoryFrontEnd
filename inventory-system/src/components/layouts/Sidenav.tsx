@@ -95,7 +95,8 @@ function Sidenav({ color }: { color: string }) {
     </svg>
   );
 
-  const hasRole = (roleName: string) => auth?.roles.some(role => role.name.includes(roleName));
+  const hasRole = (roleName: string) =>
+    auth?.roles.some((role) => role.name.includes(roleName));
 
   return (
     <>
@@ -186,7 +187,7 @@ function Sidenav({ color }: { color: string }) {
             </Menu.Item>
           </>
         )}
-         {(hasRole("Customer") || hasRole("Admin")) && (
+        {(hasRole("Customer") || hasRole("Admin")) && (
           <>
             <Menu.Item key="6">
               <NavLink to="/item">
@@ -209,9 +210,22 @@ function Sidenav({ color }: { color: string }) {
                     background: page === "order" ? color : "",
                   }}
                 >
-                   <AppstoreFilled />
+                  <AppstoreFilled />
                 </span>
                 <span className="label">Orders</span>
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item key="8">
+              <NavLink to="/receiveOrder">
+                <span
+                  className="icon"
+                  style={{
+                    background: page === "orderReceive" ? color : "",
+                  }}
+                >
+                  <AppstoreFilled />
+                </span>
+                <span className="label">Receive Order</span>
               </NavLink>
             </Menu.Item>
           </>

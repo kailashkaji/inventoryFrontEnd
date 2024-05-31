@@ -30,7 +30,9 @@ const OrderForm: React.FC<OrderFormProps> = ({
   );
   const disabled = initialData?.id != undefined;
   const auth: User | null = useAuthUser();
-  const isAdmin: boolean = auth?.roles.some(role => role.name.includes("Admin"));
+  const isAdmin: boolean = auth?.roles.some((role) =>
+    role.name.includes("Admin")
+  );
 
   const vendorList: SupplierData[] = useSelector(
     (state: RootState) => state.supplierReducer.suppliers,
@@ -48,11 +50,12 @@ const OrderForm: React.FC<OrderFormProps> = ({
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      console.log("final result:", values);
+      console.log(initialData, "final result:", values, "::", orderItems);
 
       onOk({
         ...initialData,
         ...values,
+        type: 1,
         orderItem: orderItems,
       });
 

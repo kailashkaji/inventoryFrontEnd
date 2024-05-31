@@ -63,13 +63,12 @@ function App() {
   //   // Add more inventory items as needed
   // ];
   const totalNumProduct = items ? items.length : 0;
-  const lowStockProduct =
-    items.filter(
-      (x) =>
-        x.itemLots != null &&
-        x.minRecomStock >
-          x.itemLots?.reduce((total, itemLot) => total + itemLot.available, 0)
-    )?.length || 0;
+  const lowStockProduct = items.filter(
+    (x) =>
+      x.itemLots.length > 0 &&
+      x.minRecomStock >
+        x.itemLots?.reduce((total, itemLot) => total + itemLot.available, 0)
+  )?.length;
 
   const outofStockProduct =
     items.filter(

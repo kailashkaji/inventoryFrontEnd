@@ -11,6 +11,7 @@ import Category from "./pages/category.tsx";
 import Product from "./pages/product.tsx";
 import Items from "./pages/item.tsx";
 import Order from "./pages/order.tsx";
+import ReceiveOrders from "./pages/orderReceive.tsx";
 function App() {
   return (
     <BrowserRouter>
@@ -32,6 +33,7 @@ function App() {
             <Route path="/product" element={<Product />} />
             <Route path="/item" element={<Items />} />
             <Route path="/order" element={<Order />} />
+            <Route path="/receiveOrder" element={<ReceiveOrders />} />
           </Route>
         </Route>
         {/* </Route> */}
