@@ -12,6 +12,9 @@ export const actionOrder = {
   LOAD_ALL_ORDER: "LOAD_ALL_ORDER" as const,
   LOAD_ALL_ORDER_SUCCESS: "LOAD_ALL_ORDER_SUCCESS" as const,
   LOAD_ALL_ORDER_ERROR: "LOAD_ALL_ORDER_ERROR" as const,
+  LOAD_ALL_ORDER_BY_STATUS: "LOAD_ALL_ORDER_BY_STATUS" as const,
+  LOAD_ALL_ORDER_BY_STATUS_SUCCESS: "LOAD_ALL_ORDER_BY_STATUS_SUCCESS" as const,
+  LOAD_ALL_ORDER_BY_STATUS_ERROR: "LOAD_ALL_ORDER_BY_STATUS_ERROR" as const,
 };
 
 type ActionOrder = (typeof actionOrder)[keyof typeof actionOrder];

@@ -15,19 +15,22 @@ interface SupplierFormProps {
   onCancel: () => void;
   onOk: (order: Order) => void;
   initialData?: Order;
+  updateTotal: (total: number) => void;
 }
 
 const OrderReceiveForm: React.FC<SupplierFormProps> = ({
   visible,
   onCancel,
   onOk,
+  updateTotal,
   initialData,
 }) => {
   const [form] = Form.useForm();
   const [form1] = Form.useForm();
   const dispatch = useDispatch();
+  const [order, setOrder] = useState<Order>(initialData || {});
   const [orderItems, setOrderItems] = useState<OrderItem[]>(
-    initialData?.orderItem || []
+    order?.orderItem || []
   );
   const [isLoading, setIsLoading] = useState(true);
   const vendorList: SupplierData[] = useSelector(
@@ -40,7 +43,6 @@ const OrderReceiveForm: React.FC<SupplierFormProps> = ({
   );
   useEffect(() => {
     if (visible == true) {
-      console.log("data ==>", initialData);
       dispatch(getSuppliers());
       form.setFieldsValue(initialData);
       setIsLoading(false);
@@ -49,16 +51,18 @@ const OrderReceiveForm: React.FC<SupplierFormProps> = ({
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      console.log("final result:", values);
+      form1.validateFields().then((values1) => {
+        console.warn("aaba k hunxa :", values, ":abc:", values1);
+        onOk({
+          ...order,
+          ...initialData,
+          ...values,
+          orderItem: orderItems,
+        });
 
-      onOk({
-        ...initialData,
-        ...values,
-        orderItem: orderItems,
+        form.resetFields();
+        onCancel();
       });
-
-      form.resetFields();
-      onCancel();
     });
   };
   const handleCancel = () => {
@@ -70,25 +74,30 @@ const OrderReceiveForm: React.FC<SupplierFormProps> = ({
       userId: option?.value,
       type: 1,
       id: 0,
+      status: 0,
     };
     dispatch(getOrdersBySupplierId(tempOrder));
     dispatch(getItems());
     form.resetFields();
-    form1.resetFields(["purchaseOrders"]);
-    setOrderItems([]);
+    form1.resetFields(["id"]);
+    handleOrderItemsUpdate([]);
   };
   const selectOrder = (
     _: string,
     option?: { label: string; value: number }
   ) => {
     initialData = orders.find((x) => x.id == option?.value);
+    if (initialData) setOrder(initialData);
     form.setFieldsValue(initialData);
     if (initialData?.orderItem) {
-      setOrderItems(initialData.orderItem);
+      //setOrderItems(initialData.orderItem);
+      handleOrderItemsUpdate(initialData.orderItem);
     }
   };
   const handleClose = () => {
     form.resetFields();
+    form1.resetFields();
+    setOrderItems([]);
   };
   const filterOption = (
     input: string,
@@ -98,18 +107,22 @@ const OrderReceiveForm: React.FC<SupplierFormProps> = ({
     return (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   };
   const handleOrderItemsUpdate = (items: OrderItem[]) => {
-    setOrderItems(items); // Update orderItems state
     const grandTotal = items.reduce(
       (total, item) => total + (item.orderedQuantity || 0) * (item.price || 0),
       0
     );
-    form.setFieldsValue({ ...initialData, total: grandTotal });
+    const updatedItems = items.map((item) => ({
+      ...item,
+      arrivedQuantity: item.orderedQuantity,
+    }));
+    setOrderItems(updatedItems); // Update orderItems state
+    updateTotal(grandTotal);
   };
-
   return (
     <>
       {isLoading == false && (
         <Modal
+          width={1000}
           title={initialData ? "Update Supplier" : "New Purchase Receive"}
           open={visible}
           afterClose={handleClose}
@@ -139,7 +152,7 @@ const OrderReceiveForm: React.FC<SupplierFormProps> = ({
               />
             </Form.Item>
             <Form.Item
-              name="purchaseOrders"
+              name="id"
               label="Purchase Orders"
               rules={[{ required: true, message: "Please select the order!" }]}
             >

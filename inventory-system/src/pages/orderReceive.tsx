@@ -3,11 +3,15 @@ import { Table, Button, Space, TableProps, Card, Row, Col } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { getAllOrders, updateOrder } from "../redux/order/action";
+import { getAllOrdersByStatus, updateOrder } from "../redux/order/action";
 import { getProducts } from "../redux/product/action";
 import { getBrands } from "../redux/brand/action";
 import OrderReceiveForm from "./modal/addUpdateViewOrderReceive";
 import { Order } from "../redux/order/constant";
+import {
+  getStatusTag,
+  getTypeBadge,
+} from "../components/views/statusCollection";
 
 const ReceiveOrders: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -23,7 +27,7 @@ const ReceiveOrders: React.FC = () => {
       setLoading(false);
       dispatch(getProducts());
       dispatch(getBrands());
-      dispatch(getAllOrders());
+      dispatch(getAllOrdersByStatus({ status: 3 }));
     }
   }, [dispatch, loading]);
 
@@ -31,8 +35,12 @@ const ReceiveOrders: React.FC = () => {
     setOrder(undefined);
     setVisible(true);
   };
+  const updateTotal = (total: number) => {
+    setOrder({ ...order, total });
+  };
 
   const handleSaveOrder = (sup: Order) => {
+    console.warn("data to update in db => ", sup);
     dispatch(updateOrder(sup));
     setVisible(false);
     setTimeout(() => setLoading(true), 1000);
@@ -46,51 +54,33 @@ const ReceiveOrders: React.FC = () => {
 
   const columns: TableProps<Order>["columns"] = [
     {
-      title: "id",
+      title: "ID",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "orderName",
-      dataIndex: "orderName",
-      key: "orderName",
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      render: (type: number) => getTypeBadge(type),
     },
     {
-      title: "sku",
-      dataIndex: "sku",
-      key: "sku",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status: string) => getStatusTag(Number(status)),
     },
-    {
-      title: "mrp",
-      dataIndex: "mrp",
-      key: "mrp",
-    },
-    {
-      title: "unit",
-      dataIndex: "unit",
-      key: "unit",
-    },
-    {
-      title: "dimension",
-      dataIndex: "dimension",
-      key: "dimension",
-    },
-    {
-      title: "minRecomStock",
-      dataIndex: "minRecomStock",
-      key: "minRecomStock",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_: unknown, record: Order) => (
-        <Space size="middle">
-          <Button type="link" onClick={() => onUpdate(record)}>
-            Update
-          </Button>
-        </Space>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (_: unknown, record: Order) => (
+    //     <Space size="middle">
+    //       <Button type="link" onClick={() => onUpdate(record)}>
+    //         Update
+    //       </Button>
+    //     </Space>
+    //   ),
+    // },
   ];
 
   return (
@@ -109,7 +99,7 @@ const ReceiveOrders: React.FC = () => {
                     icon={<PlusOutlined />}
                     onClick={onCreate}
                   >
-                    Create Order
+                    Receive Order
                   </Button>
                 </>
               }
@@ -133,6 +123,7 @@ const ReceiveOrders: React.FC = () => {
         onCancel={() => setVisible(false)}
         onOk={handleSaveOrder}
         initialData={order}
+        updateTotal={updateTotal}
       />
     </>
   );

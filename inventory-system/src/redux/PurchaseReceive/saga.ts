@@ -19,6 +19,7 @@ function* getOrderBySupplier(action: {
       {
         userId: action.payload.userId,
         type: action.payload.type,
+        status: action.payload.status,
       },
       headerParms
     );

@@ -24,6 +24,15 @@ export const getOrderBySupplierId = (
     params: data, // Use params to send query parameters
     headers: headers,
   });
+
+export const getAllOrdersByStatus = (
+  data: unknown,
+  headers: AxiosRequestConfig["headers"]
+) =>
+  axios.get(bgapiUrl + "/api/order/getAllByStatus", {
+    params: data, // Use params to send query parameters
+    headers: headers,
+  });
 export const editOrder = (
   id: number,
   data: string,

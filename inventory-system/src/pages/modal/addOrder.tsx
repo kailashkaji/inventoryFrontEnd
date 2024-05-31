@@ -50,7 +50,7 @@ const OrderForm: React.FC<OrderFormProps> = ({
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      console.log("final result:", values);
+      console.log(initialData, "final result:", values, "::", orderItems);
 
       onOk({
         ...initialData,

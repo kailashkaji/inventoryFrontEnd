@@ -28,3 +28,10 @@ export const getAllOrders = () => {
     type: actionOrder.LOAD_ALL_ORDER,
   };
 };
+export const getAllOrdersByStatus = (data: Order) => {
+  console.warn("get all orders");
+  return {
+    type: actionOrder.LOAD_ALL_ORDER_BY_STATUS,
+    payload: data,
+  };
+};

@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Button,
-  Space,
-  TableProps,
-  Card,
-  Row,
-  Col,
-  Modal,
-  Tag,
-  Badge,
-  BadgeProps,
-} from "antd";
+import { Table, Button, Space, TableProps, Card, Row, Col, Modal } from "antd";
 import { PlusOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import OrderForm from "./modal/addOrder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -20,6 +8,10 @@ import { getAllOrders, createOrder, getOrderById } from "../redux/order/action";
 import { getSuppliers } from "../redux/supplier/action";
 import { Order } from "../redux/order/constant";
 import { useLocation } from "react-router-dom";
+import {
+  getStatusTag,
+  getTypeBadge,
+} from "../components/views/statusCollection";
 
 const Orders: React.FC = () => {
   const dispatch = useDispatch();
@@ -78,49 +70,6 @@ const Orders: React.FC = () => {
   const onView = (record: Order) => {
     setOrder(record);
     setVisible(true);
-  };
-
-  const getTypeBadge = (type: number) => {
-    let text = "";
-    let status: BadgeProps["status"] = "default";
-    switch (type) {
-      case 0:
-        text = "Purchase";
-        status = "processing";
-        break;
-      case 1:
-        text = "Sale";
-        status = "success";
-        break;
-      default:
-        text = "Unknown";
-        status = "default";
-    }
-    return <Badge status={status} text={text} />;
-  };
-
-  const getStatusTag = (status: number) => {
-    console.log("Status received:", status, typeof status);
-    let color = "";
-    let text = "";
-    switch (status) {
-      case 0:
-        color = "orange";
-        text = "Pending";
-        break;
-      case 1:
-        color = "green";
-        text = "Completed";
-        break;
-      case 2:
-        color = "red";
-        text = "Cancelled";
-        break;
-      default:
-        color = "blue";
-        text = "Unknown";
-    }
-    return <Tag color={color}>{text}</Tag>;
   };
 
   const columns: TableProps<Order>["columns"] = [

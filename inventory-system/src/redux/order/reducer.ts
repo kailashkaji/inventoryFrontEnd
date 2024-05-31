@@ -88,6 +88,35 @@ const orderReducer = (
         isError: true,
         orders: [],
       };
+    case actionOrder.LOAD_ALL_ORDER_BY_STATUS: {
+      return {
+        ...state,
+        orders: [],
+        loading: true,
+        isSuccess: false,
+        error: null,
+      };
+    }
+
+    case actionOrder.LOAD_ALL_ORDER_BY_STATUS_SUCCESS: {
+      return {
+        ...state,
+        orders: action.result,
+        loading: false,
+        error: null,
+        isSuccess: true,
+        isError: false,
+      };
+    }
+    case actionOrder.LOAD_ALL_ORDER_BY_STATUS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+        isSuccess: false,
+        isError: true,
+        orders: [],
+      };
     case actionOrder.UPDATE_ORDER:
       return {
         ...state,
@@ -100,7 +129,7 @@ const orderReducer = (
 
       return {
         ...state,
-        orders: item,
+        orders: action.result,
         loading: false,
         error: null,
         isSuccess: true,
@@ -114,7 +143,6 @@ const orderReducer = (
         error: action.error,
         isSuccess: false,
         isError: true,
-        orders: Object.assign({}, state.orders, action.result),
       };
     default:
       return state;
