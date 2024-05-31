@@ -12,3 +12,8 @@
   border: 1px solid #d9d9d9;
   border-radius: 2px;
 }
+
+.error-message {
+  color: red;
+  margin-bottom: 16px;
+}
