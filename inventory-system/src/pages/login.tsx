@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Layout, Menu, Button, Row, Col, Typography, Form, Input } from "antd";
+import { Layout, Menu, Button, Row, Col, Typography, Form, Input, message } from "antd";
 import signinbg from "../assets/images/img-signin.jpg";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
@@ -106,17 +106,16 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const locationState = useLocation();
   const navigate = useNavigate();
-  const { from } =
-    locationState.state == null
-      ? { from: { pathname: "/" } }
-      : locationState.state;
+  const { from } = locationState.state == null ? { from: { pathname: "/" } } : locationState.state;
   const [stop, setStop] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
-  const { login, isSuccess, user, accessToken, refreshToken } = useSelector(
+  const { login, isSuccess, isError, user, accessToken, refreshToken } = useSelector(
     (state: RootState) => state.loginReducer,
     shallowEqual
   );
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyValue: Record<string, string> = {};
     keyValue.field = e.target.name;
@@ -139,20 +138,15 @@ const SignIn = () => {
     if (isAuthenticated) {
       navigate(from.pathname);
     }
-    if (!!isSuccess && !stop) {
+    if (isSuccess && !stop) {
       setStop(true);
       assignCredentials();
       dispatch(UserClear());
     }
-  }, [
-    assignCredentials,
-    dispatch,
-    from.pathname,
-    isAuthenticated,
-    isSuccess,
-    navigate,
-    stop,
-  ]);
+    if (isError && !isSuccess) {
+      setError("Login failed. Please check your credentials and try again.");
+    }
+  }, [assignCredentials, dispatch, from.pathname, isAuthenticated, isSuccess, isError, navigate, stop]);
 
   const onFinish = (values: string) => {
     console.log("Success:", values);
@@ -161,7 +155,9 @@ const SignIn = () => {
 
   const onFinishFailed = (errorInfo: ValidateErrorEntity<string>) => {
     console.log("Failed:", errorInfo);
+    setError("Login failed. Please check your credentials and try again.");
   };
+
   return (
     <>
       <Layout className="layout-default layout-signin">
@@ -203,15 +199,12 @@ const SignIn = () => {
         </Header>
         <Content className="signin">
           <Row gutter={[24, 0]} justify="space-around">
-            <Col
-              xs={{ span: 24, offset: 0 }}
-              lg={{ span: 6, offset: 2 }}
-              md={{ span: 12 }}
-            >
+            <Col xs={{ span: 24, offset: 0 }} lg={{ span: 6, offset: 2 }} md={{ span: 12 }}>
               <Title className="mb-15">Sign In</Title>
               <Title className="font-regular text-muted" level={5}>
                 Enter your email and password to sign in
               </Title>
+              {error && <p style={{ color: 'red' }}>{error}</p>}
               <Form
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}

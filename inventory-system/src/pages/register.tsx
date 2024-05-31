@@ -23,6 +23,7 @@ import { signupRequest } from "../redux/signup/action";
 import { RootState } from "../redux/store";
 const { Title } = Typography;
 const { Header, Footer, Content } = Layout;
+
 const template = [
   <svg
     data-v-4ebdc598=""
@@ -52,6 +53,7 @@ const template = [
     ></path>
   </svg>,
 ];
+
 const profile = [
   <svg
     data-v-4ebdc598=""
@@ -71,6 +73,7 @@ const profile = [
     ></path>
   </svg>,
 ];
+
 const signup = [
   <svg
     data-v-4ebdc598=""
@@ -90,6 +93,7 @@ const signup = [
     ></path>
   </svg>,
 ];
+
 const signin = [
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -103,6 +107,7 @@ const signin = [
     />
   </svg>,
 ];
+
 const SignUp: React.FC = () => {
   const dispatch = useDispatch();
   const loading = useSelector(
@@ -130,6 +135,7 @@ const SignUp: React.FC = () => {
   const handleSignup = () => {
     dispatch(signupRequest(username, password, roles));
   };
+
   const onFinish = (values: string) => {
     console.log("Success:", values);
     handleSignup();
@@ -138,6 +144,7 @@ const SignUp: React.FC = () => {
   const onFinishFailed = (errorInfo: ValidateErrorEntity<string>) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <>
       <div className="layout-default ant-layout layout-sign-up">
@@ -191,7 +198,7 @@ const SignUp: React.FC = () => {
             title={<h5>Register</h5>}
             bordered={false}
           >
-            {error && <div>Error: {error}</div>}
+            {error && <div className="error-message">Error: {error}</div>}
             <Form
               name="basic"
               initialValues={{ remember: true }}
@@ -209,15 +216,6 @@ const SignUp: React.FC = () => {
                   placeholder="Name"
                   onChange={(e) => setUsername(e.target.value)}
                 />
-
-                {/* </Form.Item>
-                <Form.Item
-                  name="email"
-                  rules={[
-                    { required: true, message: "Please input your email!" },
-                  ]}
-                >
-                  <Input placeholder="email" /> */}
               </Form.Item>
               <Form.Item
                 name="password"
@@ -226,6 +224,7 @@ const SignUp: React.FC = () => {
                 ]}
               >
                 <Input
+                  type="password"
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -247,14 +246,6 @@ const SignUp: React.FC = () => {
                   ))}
                 </Checkbox.Group>
               </Form.Item>
-              {/* <Form.Item name="remember" valuePropName="checked">
-                  <Checkbox>
-                    I agree the{" "}
-                    <a href="#pablo" className="font-bold text-dark">
-                      Terms and Conditions
-                    </a>
-                  </Checkbox>
-                </Form.Item> */}
 
               <Form.Item>
                 <Button
