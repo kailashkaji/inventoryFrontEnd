@@ -88,14 +88,18 @@ function App() {
     {
       today: "Low Stock Product",
       title: lowStockProduct,
-      persent: (lowStockProduct / totalNumProduct) * 100 + "%",
+      persent:
+        parseFloat(((lowStockProduct / totalNumProduct) * 100).toFixed(2)) +
+        "%",
       icon: <ProductFilled />,
       bnb: "bnb2",
     },
     {
       today: "Out of Stock Product",
       title: outofStockProduct,
-      persent: (outofStockProduct / totalNumProduct) * 100 + "%",
+      persent:
+        parseFloat(((outofStockProduct / totalNumProduct) * 100).toFixed(2)) +
+        "%",
       icon: <StopFilled />,
       bnb: "redtext",
     },
