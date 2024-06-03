@@ -185,6 +185,19 @@ function Sidenav({ color }: { color: string }) {
                 <span className="label">Product</span>
               </NavLink>
             </Menu.Item>
+            <Menu.Item key="8">
+              <NavLink to="/receiveOrder">
+                <span
+                  className="icon"
+                  style={{
+                    background: page === "orderReceive" ? color : "",
+                  }}
+                >
+                  <AppstoreFilled />
+                </span>
+                <span className="label">Receive Order</span>
+              </NavLink>
+            </Menu.Item>
           </>
         )}
         {(hasRole("Customer") || hasRole("Admin")) && (
@@ -213,19 +226,6 @@ function Sidenav({ color }: { color: string }) {
                   <AppstoreFilled />
                 </span>
                 <span className="label">Orders</span>
-              </NavLink>
-            </Menu.Item>
-            <Menu.Item key="8">
-              <NavLink to="/receiveOrder">
-                <span
-                  className="icon"
-                  style={{
-                    background: page === "orderReceive" ? color : "",
-                  }}
-                >
-                  <AppstoreFilled />
-                </span>
-                <span className="label">Receive Order</span>
               </NavLink>
             </Menu.Item>
           </>
